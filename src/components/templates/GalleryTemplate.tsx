@@ -4,6 +4,7 @@ import Header from '../molecules/Header';
 import BottomNav from '../molecules/BottomNav';
 import type { GreetingResponse } from '../../types/greeting.types';
 import GreetingDetailModal from '../organisms/GreetingDetailModel';
+import GalleryHeaderEventSkeleton from '../skeletons/GalleryHeaderEventSkeleton';
 
 interface GalleryTemplateProps {
   greetings: GreetingResponse[];
@@ -23,15 +24,19 @@ export default function GalleryTemplate({
       <Header />
 
       {/* Hero Header Event */}
-      <div className="text-center py-6 px-4 space-y-1 border-b border-[#e2e8f0]/60 bg-white">
-        <span className="text-xs uppercase tracking-[0.2em] text-[#64748B] font-medium">
-          WEDDING MEMORIES OF
-        </span>
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#4648d4]">
-          Rina & Farhan
-        </h2>
-        <p className="text-xs text-[#64748B] tracking-widest">16 AGUSTUS 2026</p>
-      </div>
+      {loading ? (
+        <GalleryHeaderEventSkeleton/>
+      ) : (
+        <div className="text-center py-6 px-4 space-y-1 border-b border-[#e2e8f0]/60 bg-white">
+          <span className="text-xs uppercase tracking-[0.2em] text-[#64748B] font-medium">
+            WEDDING MEMORIES OF
+          </span>
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#4648d4]">
+            Rina & Farhan
+          </h2>
+          <p className="text-xs text-[#64748B] tracking-widest">16 AGUSTUS 2026</p>
+        </div>
+      )}
 
       {/* Content Area */}
       <main className="max-w-md w-full mx-auto px-4 py-4 flex-1">

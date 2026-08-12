@@ -6,6 +6,7 @@ import Konva from 'konva';
 import type { FrameItem } from '../../types/frame.types';
 import type { PhotoLayerItem } from '../organisms/KonvaFrameEditor';
 import KonvaFrameEditor from '../organisms/KonvaFrameEditor';
+import KonvaEditorSkeleton from '../skeletons/KonvaEditorSkeleton';
 
 interface Step2FrameTemplateProps {
   rawPhotos: string[]; // 3 Foto Mentah dari Step 1
@@ -49,17 +50,21 @@ export default function Step2FrameTemplate({
       <main className="max-w-md w-full mx-auto px-4 py-4 space-y-4 flex-1">
         <StepHeader currentStep={2} totalSteps={4} stepTitle="Edit & Frame" />
 
-        {/* Konva Canvas Editor Area */}
-        {selectedFrame && (
-          <KonvaFrameEditor
-            photoLayers={photoLayers}
-            frameOverlayUrl={selectedFrame.overlayUrl}
-            selectedPhotoId={selectedPhotoId}
-            stageRef={stageRef}
-            onSelectPhotoLayer={onSelectPhotoLayer}
-            onUpdatePhotoLayer={onUpdatePhotoLayer}
-            onRemovePhotoLayer={onRemovePhotoLayer}
-          />
+        {/* KONVA CANVAS EDITOR AREA (SKELETON / REAL) */}
+        {loading ? (
+          <KonvaEditorSkeleton />
+        ) : (
+          selectedFrame && (
+            <KonvaFrameEditor
+              photoLayers={photoLayers}
+              frameOverlayUrl={selectedFrame.overlayUrl}
+              selectedPhotoId={selectedPhotoId}
+              stageRef={stageRef}
+              onSelectPhotoLayer={onSelectPhotoLayer}
+              onUpdatePhotoLayer={onUpdatePhotoLayer}
+              onRemovePhotoLayer={onRemovePhotoLayer}
+            />
+          )
         )}
 
         {/* QoL FEATURE 1: Strip Foto Mentah dari Step 1 (Tambahkan ke Canvas) */}
@@ -76,7 +81,7 @@ export default function Step2FrameTemplate({
               <button
                 key={index}
                 onClick={() => onAddPhotoToCanvas(src)}
-                className="relative aspect-square rounded-xl overflow-hidden border-2 border-[#e2e8f0] bg-white group hover:border-[#4648d4] transition-all active:scale-95 shadow-sm"
+                className="relative aspect-square rounded-xl overflow-hidden border-2 border-[#e2e8f0] bg-white group hover:border-[#4648d4] transition-all active:scale-95 shadow-sm cursor-pointer"
               >
                 <img
                   src={src}
@@ -114,7 +119,7 @@ export default function Step2FrameTemplate({
                   <button
                     key={frame.id}
                     onClick={() => onSelectFrame(frame)}
-                    className={`snap-start shrink-0 w-20 p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white ${
+                    className={`snap-start shrink-0 w-20 p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white cursor-pointer ${
                       isSelected
                         ? 'border-[#4648d4] bg-[#4648d4]/5 ring-2 ring-[#4648d4]/20 font-bold text-[#4648d4]'
                         : 'border-[#e2e8f0] text-slate-600 hover:border-slate-300'
@@ -146,7 +151,7 @@ export default function Step2FrameTemplate({
             variant="tertiary"
             icon={<ArrowRight className="w-5 h-5" />}
             onClick={onNextStep}
-            disabled={!selectedFrame || photoLayers.length === 0}
+            disabled={loading || !selectedFrame || photoLayers.length === 0}
           >
             {isEditMode ? 'Simpan Foto' : 'Next Step (Audio)'}
           </Button>
