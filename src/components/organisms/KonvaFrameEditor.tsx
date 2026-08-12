@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Image as KonvaImage, Transformer } from 'react-konva';
 import useImage from 'use-image';
 import Konva from 'konva';
-import { ZoomIn, ZoomOut, RotateCw, Trash2 } from 'lucide-react';
+import { Crop, ZoomIn, ZoomOut, RotateCw, Trash2 } from 'lucide-react';
 import IconButton from '../atoms/IconButton';
+import ImageCropModal from './ImageCropModal';
 
 export interface PhotoLayerItem {
   id: string; // ID unik untuk tiap foto di canvas
@@ -88,10 +89,18 @@ export default function KonvaFrameEditor({
   onRemovePhotoLayer,
 }: KonvaFrameEditorProps) {
   const [frameOverlay] = useImage(frameOverlayUrl, 'anonymous');
+  const [isCropOpen, setIsCropOpen] = useState(false);
   const activeLayer = photoLayers.find((p) => p.id === selectedPhotoId);
 
   const imageRefs = useRef<Record<string, Konva.Image | null>>({});
   const trRef = useRef<Konva.Transformer | null>(null);
+
+  const handleCropComplete = (newCroppedUrl: string) => {
+    if (activeLayer) {
+      // Perbarui URL foto layer di canvas dengan hasil crop baru
+      onUpdatePhotoLayer(activeLayer.id, { url: newCroppedUrl });
+    }
+  };
 
   // Helper instan untuk attach Transformer ke node foto
   const attachTransformer = (node: Konva.Image | null) => {
@@ -219,6 +228,12 @@ export default function KonvaFrameEditor({
       {activeLayer && (
         <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-[#e2e8f0] shadow-sm animate-fade-in">
           <IconButton
+            icon={<Crop className="w-4 h-4 text-slate-700" />}
+            onClick={() => setIsCropOpen(true)}
+            title="Crop Foto"
+          />
+          <div className="w-px h-5 bg-slate-200 my-auto mx-1" />
+          <IconButton
             icon={<ZoomOut className="w-4 h-4 text-slate-700" />}
             onClick={() => handleZoom(-0.1)}
             title="Perkecil"
@@ -245,6 +260,13 @@ export default function KonvaFrameEditor({
           />
         </div>
       )}
+
+      <ImageCropModal
+        isOpen={isCropOpen}
+        imageSrc={activeLayer ? activeLayer.url : null}
+        onClose={() => setIsCropOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 }
