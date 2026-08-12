@@ -1,13 +1,8 @@
-export interface Area {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import type { PixelCrop } from 'react-image-crop';
 
 export const getCroppedImg = (
   imageSrc: string,
-  pixelCrop: Area
+  pixelCrop: PixelCrop
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -19,29 +14,35 @@ export const getCroppedImg = (
       const ctx = canvas.getContext('2d');
 
       if (!ctx) {
-        reject(new Error('Canvas context not found'));
+        reject(new Error('No 2d context'));
         return;
       }
 
-      // Set ukuran canvas hasil potongan
-      canvas.width = pixelCrop.width;
-      canvas.height = pixelCrop.height;
+      // Hitung skala berdasarkan ukuran tampilan gambar vs ukuran asli
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
 
-      // Gambar bagian foto yang dipotong ke canvas baru
+      // Set ukuran canvas hasil potongan
+      canvas.width = pixelCrop.width * scaleX;
+      canvas.height = pixelCrop.height * scaleY;
+
+      ctx.imageSmoothingQuality = 'high';
+
+      // Gambar area potongan
       ctx.drawImage(
         image,
-        pixelCrop.x,
-        pixelCrop.y,
-        pixelCrop.width,
-        pixelCrop.height,
+        pixelCrop.x * scaleX,
+        pixelCrop.y * scaleY,
+        pixelCrop.width * scaleX,
+        pixelCrop.height * scaleY,
         0,
         0,
-        pixelCrop.width,
-        pixelCrop.height
+        pixelCrop.width * scaleX,
+        pixelCrop.height * scaleY
       );
 
-      // Export ke Base64 Data URL
-      resolve(canvas.toDataURL('image/jpeg', 0.9));
+      // Convert ke base64
+      resolve(canvas.toDataURL('image/jpeg', 0.92));
     };
 
     image.onerror = (error) => reject(error);

@@ -226,37 +226,45 @@ export default function KonvaFrameEditor({
 
       {/* Kontrol Foto yang Sedang Aktif Dipilih */}
       {activeLayer && (
-        <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-[#e2e8f0] shadow-sm animate-fade-in">
+        <div className="flex items-center justify-between gap-1.5 bg-white px-3 py-2 rounded-2xl border border-[#e2e8f0] shadow-md animate-fade-in max-w-[340px] w-full">
           <IconButton
             icon={<Crop className="w-4 h-4 text-slate-700" />}
             onClick={() => setIsCropOpen(true)}
             title="Crop Foto"
           />
-          <div className="w-px h-5 bg-slate-200 my-auto mx-1" />
+
+          <div className="w-px h-4 bg-slate-200 shrink-0" />
+
           <IconButton
             icon={<ZoomOut className="w-4 h-4 text-slate-700" />}
             onClick={() => handleZoom(-0.1)}
             title="Perkecil"
           />
-          <span className="text-xs font-semibold text-slate-500 w-12 text-center">
+
+          <span className="text-[11px] font-bold text-slate-600 w-10 text-center shrink-0">
             {Math.round(activeLayer.scale * 100)}%
           </span>
+
           <IconButton
             icon={<ZoomIn className="w-4 h-4 text-slate-700" />}
             onClick={() => handleZoom(0.1)}
             title="Perbesar"
           />
-          <div className="w-px h-5 bg-slate-200 my-auto mx-1" />
+
+          <div className="w-px h-4 bg-slate-200 shrink-0" />
+
           <IconButton
             icon={<RotateCw className="w-4 h-4 text-slate-700" />}
             onClick={handleRotate}
             title="Putar Foto"
           />
-          <div className="w-px h-5 bg-slate-200 my-auto mx-1" />
+
+          <div className="w-px h-4 bg-slate-200 shrink-0" />
+
           <IconButton
             icon={<Trash2 className="w-4 h-4 text-red-500" />}
             onClick={() => onRemovePhotoLayer(activeLayer.id)}
-            title="Hapus Foto Ini dari Bingkai"
+            title="Hapus Foto"
           />
         </div>
       )}
