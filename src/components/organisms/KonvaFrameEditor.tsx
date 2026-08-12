@@ -53,6 +53,7 @@ function SingleKonvaPhoto({
           scaleX={item.scale}
           scaleY={item.scale}
           rotation={item.rotation}
+          // 💡 SELALU GUNAKAN UKURAN GAMBAR YANG BARU DIMUAT UNTUK TITIK PUSAT (CENTER OFFSET)
           offsetX={image.width / 2}
           offsetY={image.height / 2}
           draggable
@@ -97,8 +98,23 @@ export default function KonvaFrameEditor({
 
   const handleCropComplete = (newCroppedUrl: string) => {
     if (activeLayer) {
-      // Perbarui URL foto layer di canvas dengan hasil crop baru
-      onUpdatePhotoLayer(activeLayer.id, { url: newCroppedUrl });
+      // Buat objek gambar sementara untuk membaca ukuran asli hasil crop baru
+      const img = new Image();
+      img.src = newCroppedUrl;
+      img.onload = () => {
+        // Hitung skala awal agar hasil crop muat dengan pas di tengah Canvas (300 x 533)
+        const targetWidth = 220; // Lebar standar ideal foto di canvas
+        const newScale = targetWidth / img.width;
+
+        // Update URL sekaligus RESET posisi foto tepat di TENGAH Canvas Konva (X: 150, Y: 266)
+        onUpdatePhotoLayer(activeLayer.id, {
+          url: newCroppedUrl,
+          x: CANVAS_WIDTH / 2,   // 150 (Tengah Horisontal)
+          y: CANVAS_HEIGHT / 2,  // 266 (Tengah Vertikal)
+          scale: newScale,       // Skala otomatis disesuaikan
+          rotation: 0,           // Reset rotasi
+        });
+      };
     }
   };
 
