@@ -61,7 +61,8 @@ export default function ImageCropModal({
           image={imageSrc}
           crop={crop}
           zoom={zoom}
-          aspect={1} // Aspek rasio 1:1 (persegi). Bisa diubah atau dihapus jika bebas
+          showGrid={true}
+          objectFit="contain"
           onCropChange={setCrop}
           onZoomChange={setZoom}
           onCropComplete={handleCropCompleteCallback}
