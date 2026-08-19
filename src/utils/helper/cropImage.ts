@@ -1,50 +1,43 @@
 import type { PixelCrop } from 'react-image-crop';
 
 export const getCroppedImg = (
-  imageSrc: string,
+  image: HTMLImageElement,
   pixelCrop: PixelCrop
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.src = imageSrc;
-    image.crossOrigin = 'anonymous';
+    const canvas =  document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if(!ctx){
+      reject(new Error('Gagal membuat context 2D canvas'));
+      return;
+    }
 
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
 
-      if (!ctx) {
-        reject(new Error('No 2d context'));
-        return;
-      }
+    const cropX = pixelCrop.x * scaleX;
+    const cropY = pixelCrop.y * scaleY;
+    const cropWidth = pixelCrop.width * scaleX;
+    const cropHeight = pixelCrop.height * scaleY;
 
-      // Hitung skala berdasarkan ukuran tampilan gambar vs ukuran asli
-      const scaleX = image.naturalWidth / image.width;
-      const scaleY = image.naturalHeight / image.height;
+    canvas.width = Math.floor(cropWidth);
+    canvas.height = Math.floor(cropHeight);
 
-      // Set ukuran canvas hasil potongan
-      canvas.width = pixelCrop.width * scaleX;
-      canvas.height = pixelCrop.height * scaleY;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
-      ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(
+      image,
+      cropX,
+      cropY,
+      cropWidth,
+      cropHeight,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
-      // Gambar area potongan
-      ctx.drawImage(
-        image,
-        pixelCrop.x * scaleX,
-        pixelCrop.y * scaleY,
-        pixelCrop.width * scaleX,
-        pixelCrop.height * scaleY,
-        0,
-        0,
-        pixelCrop.width * scaleX,
-        pixelCrop.height * scaleY
-      );
-
-      // Convert ke base64
-      resolve(canvas.toDataURL('image/jpeg', 0.92));
-    };
-
-    image.onerror = (error) => reject(error);
+    resolve(canvas.toDataURL('image/jpeg', 0.92));
   });
 };

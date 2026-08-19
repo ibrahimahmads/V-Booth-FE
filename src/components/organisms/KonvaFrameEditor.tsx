@@ -40,7 +40,6 @@ function SingleKonvaPhoto({
   onChange: (newAttrs: Partial<PhotoLayerItem>) => void;
   onRef: (node: Konva.Image | null) => void;
 }) {
-  // Pass 'anonymous' untuk hindari CORS issue pada canvas
   const [image, status] = useImage(item.url, 'anonymous');
 
   return (
@@ -54,7 +53,7 @@ function SingleKonvaPhoto({
           scaleX={item.scale}
           scaleY={item.scale}
           rotation={item.rotation}
-          /* 💡 TITIK PUSAT DITENTUKAN PERSIS DARI UKURAN GAMBAR YANG SUDAH TER-LOAD */
+          // 💡 KUNCI TITIK TANGAT: SELALU PAKAI SETENGAH UKURAN GAMBAR YANG TER-LOAD
           offsetX={image.width / 2}
           offsetY={image.height / 2}
           draggable
@@ -104,19 +103,17 @@ export default function KonvaFrameEditor({
     img.src = newCroppedUrl;
     
     img.onload = () => {
-      // Tentukan lebar ideal foto di dalam canvas (misal 220px)
+      // Tentukan lebar ideal tampilan hasil crop di canvas Konva (220px)
       const targetWidth = 220;
-      
-      // Hitung skala otomatis agar tidak kekecilan/kebesaran
-      const calculatedScale = targetWidth / img.width;
+      const calculatedScale = Math.min(Math.max(targetWidth / img.width, 0.2), 3);
 
-      // Update state layer foto
+      // Update URL foto layer & posisikan TEPAT DI TENGAH CANVAS (150, 266)
       onUpdatePhotoLayer(activeLayer.id, {
         url: newCroppedUrl,
-        x: CANVAS_WIDTH / 2,  // 150 (Tepat di tengah horizontal canvas)
-        y: CANVAS_HEIGHT / 2, // 266 (Tepat di tengah vertikal canvas)
+        x: CANVAS_WIDTH / 2,   // 150
+        y: CANVAS_HEIGHT / 2,  // 266
         scale: calculatedScale,
-        rotation: 0,          // Reset rotasi ke 0 derajat
+        rotation: 0,
       });
     };
   };

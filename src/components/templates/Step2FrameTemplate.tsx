@@ -113,31 +113,36 @@ export default function Step2FrameTemplate({
             </div>
           ) : (
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
-              {frames.map((frame) => {
-                const isSelected = selectedFrame?.id === frame.id;
-                return (
-                  <button
-                    key={frame.id}
-                    onClick={() => onSelectFrame(frame)}
-                    className={`snap-start shrink-0 w-20 p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white cursor-pointer ${
-                      isSelected
-                        ? 'border-[#4648d4] bg-[#4648d4]/5 ring-2 ring-[#4648d4]/20 font-bold text-[#4648d4]'
-                        : 'border-[#e2e8f0] text-slate-600 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="w-full aspect-9/16 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
-                      <img
-                        src={frame.overlayUrl}
-                        alt={frame.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <span className="text-[10px] truncate w-full text-center">
-                      {frame.name}
-                    </span>
-                  </button>
-                );
-              })}
+              {/* 💡 PASTIKAN frames ADALAH ARRAY SEBELUM DILAKUKAN .map() */}
+              {Array.isArray(frames) && frames.length > 0 ? (
+                frames.map((frame) => {
+                  const isSelected = selectedFrame?.id === frame.id;
+                  return (
+                    <button
+                      key={frame.id}
+                      onClick={() => onSelectFrame(frame)}
+                      className={`snap-start shrink-0 w-20 p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white cursor-pointer ${
+                        isSelected
+                          ? 'border-[#4648d4] bg-[#4648d4]/5 ring-2 ring-[#4648d4]/20 font-bold text-[#4648d4]'
+                          : 'border-[#e2e8f0] text-slate-600 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="w-full aspect-9/16 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                        <img
+                          src={frame.overlayUrl}
+                          alt={frame.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span className="text-[10px] truncate w-full text-center">
+                        {frame.name}
+                      </span>
+                    </button>
+                  );
+                })
+              ) : (
+                <p className="text-xs text-slate-400 py-2">Bingkai tidak tersedia</p>
+              )}
             </div>
           )}
         </div>

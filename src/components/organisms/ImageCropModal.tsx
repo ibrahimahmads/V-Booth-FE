@@ -18,35 +18,48 @@ export default function ImageCropModal({
   onClose,
   onCropComplete,
 }: ImageCropModalProps) {
-  // State crop bebas (Freeform)
-  const [crop, setCrop] = useState<Crop>({
-    unit: '%',
-    x: 10,
-    y: 10,
-    width: 80,
-    height: 80,
-  });
+  const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   if (!isOpen || !imageSrc) return null;
 
+  // Set default area crop awal ketika gambar selesai dimuat di modal
+  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { width, height } = e.currentTarget;
+    const cropWidth = Math.min(width, height) * 0.8;
+    
+    // Posisikan kotak crop default di tengah-tengah modal
+    const defaultCrop: Crop = {
+      unit: 'px',
+      x: (width - cropWidth) / 2,
+      y: (height - cropWidth) / 2,
+      width: cropWidth,
+      height: cropWidth,
+    };
+    setCrop(defaultCrop);
+  };
+
   const handleReset = () => {
-    setCrop({
-      unit: '%',
-      x: 10,
-      y: 10,
-      width: 80,
-      height: 80,
-    });
+    if (imgRef.current) {
+      const { width, height } = imgRef.current;
+      const cropWidth = Math.min(width, height) * 0.8;
+      setCrop({
+        unit: 'px',
+        x: (width - cropWidth) / 2,
+        y: (height - cropWidth) / 2,
+        width: cropWidth,
+        height: cropWidth,
+      });
+    }
   };
 
   const handleSaveCrop = async () => {
-    if (!completedCrop || !imageSrc) return;
+    if (!completedCrop || !imgRef.current) return;
     try {
       setIsProcessing(true);
-      const croppedImage = await getCroppedImg(imageSrc, completedCrop);
+      const croppedImage = await getCroppedImg(imgRef.current, completedCrop);
       onCropComplete(croppedImage);
       onClose();
     } catch (error) {
@@ -72,7 +85,7 @@ export default function ImageCropModal({
         </button>
       </div>
 
-      {/* Area Cropper (8 Titik Handle Bebas Ditarik) */}
+      {/* Area Cropper */}
       <div className="relative flex-1 w-full flex items-center justify-center p-4 bg-black overflow-auto">
         <ReactCrop
           crop={crop}
@@ -84,13 +97,14 @@ export default function ImageCropModal({
             ref={imgRef}
             src={imageSrc}
             alt="Crop target"
+            onLoad={onImageLoad}
             className="max-h-[65vh] w-auto object-contain"
             crossOrigin="anonymous"
           />
         </ReactCrop>
       </div>
 
-      {/* Footer Controls (Diatur pb-10 agar tidak mepet bawah HP) */}
+      {/* Footer Controls */}
       <div className="p-4 pb-10 bg-slate-900 border-t border-slate-800 space-y-3 z-10">
         <div className="flex justify-center">
           <button
@@ -102,7 +116,6 @@ export default function ImageCropModal({
           </button>
         </div>
 
-        {/* Tombol Aksi Batal & Terapkan */}
         <div className="flex gap-3 max-w-sm mx-auto">
           <Button variant="secondary" fullWidth onClick={onClose}>
             Batal
