@@ -242,7 +242,7 @@ export default function KonvaFrameEditor({
 
       {/* Kontrol Foto yang Sedang Aktif Dipilih */}
       {activeLayer && (
-        <div className="flex items-center justify-between gap-1.5 bg-white px-3 py-2 rounded-2xl border border-[#e2e8f0] shadow-md animate-fade-in max-w-[340px] w-full">
+        <div className="flex items-center justify-between gap-1.5 bg-white px-3 py-2 rounded-2xl border border-[#e2e8f0] shadow-md animate-fade-in max-w-340px w-full">
           <IconButton
             icon={<Crop className="w-4 h-4 text-slate-700" />}
             onClick={() => setIsCropOpen(true)}
