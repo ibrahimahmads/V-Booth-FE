@@ -127,7 +127,7 @@ export default function EditGreetingPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#f7f9fb] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#4648d4]" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -179,7 +179,7 @@ export default function EditGreetingPage() {
             <button
               type="button"
               onClick={handleEditAudio}
-              className="text-xs font-semibold text-[#4648d4] hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer"
             >
               <Pencil className="w-3 h-3" /> Ubah Suara
             </button>
@@ -205,7 +205,7 @@ export default function EditGreetingPage() {
             value={guestName}
             onChange={(e) => setGuestName(e.target.value)}
             placeholder="Masukkan nama Anda"
-            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#4648d4]/30 focus:border-[#4648d4] transition-all"
+            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
           />
         </div>
 
@@ -230,8 +230,8 @@ export default function EditGreetingPage() {
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in">
           <div className="bg-white p-6 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-xs w-full">
             <div className="relative flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full border-4 border-[#4648d4]/20 border-t-[#4648d4] animate-spin" />
-              <Sparkles className="w-6 h-6 text-[#4648d4] absolute" />
+              <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+              <Sparkles className="w-6 h-6 text-primary absolute" />
             </div>
             
             <div className="space-y-1">

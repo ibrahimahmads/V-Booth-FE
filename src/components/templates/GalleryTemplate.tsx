@@ -32,7 +32,7 @@ export default function GalleryTemplate({
           <span className="text-xs uppercase tracking-[0.2em] text-[#64748B] font-medium">
             WEDDING MEMORIES OF
           </span>
-          <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#4648d4]">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-primary">
             Rina & Farhan
           </h2>
           <p className="text-xs text-[#64748B] tracking-widest">16 AGUSTUS 2026</p>

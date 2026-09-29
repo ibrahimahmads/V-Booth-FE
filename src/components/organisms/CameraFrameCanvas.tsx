@@ -112,7 +112,7 @@ export default function CameraFrameCanvas({
               onClick={() => setShowGrid((prev) => !prev)}
               className={`p-1.5 rounded-xl backdrop-blur-md border transition-all cursor-pointer ${
                 showGrid
-                  ? 'bg-[#4648d4] border-[#4648d4] text-white'
+                  ? 'bg-primary border-primary text-white'
                   : 'bg-black/40 border-white/20 text-slate-300 hover:text-white'
               }`}
               title="Garis Bantu (Grid)"
@@ -137,7 +137,7 @@ export default function CameraFrameCanvas({
                 onClick={() => onChangeAspectRatio('1:1')}
                 className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   aspectRatio === '1:1'
-                    ? 'bg-[#4648d4] text-white shadow-sm'
+                    ? 'bg-primary text-white shadow-sm'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -148,7 +148,7 @@ export default function CameraFrameCanvas({
                 onClick={() => onChangeAspectRatio('9:16')}
                 className={`px-2 py-0.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   aspectRatio === '9:16'
-                    ? 'bg-[#4648d4] text-white shadow-sm'
+                    ? 'bg-primary text-white shadow-sm'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
@@ -249,7 +249,7 @@ export default function CameraFrameCanvas({
                   }}
                   className={`relative w-10 h-10 rounded-xl overflow-hidden border-2 transition-all cursor-pointer active:scale-90 ${
                     isActive
-                      ? 'border-[#4648d4] scale-105 ring-2 ring-[#4648d4]/40'
+                      ? 'border-primary scale-105 ring-2 ring-primary/40'
                       : 'border-white/70 opacity-80 hover:opacity-100'
                   }`}
                 >
