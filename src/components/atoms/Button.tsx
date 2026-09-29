@@ -17,10 +17,10 @@ export default function Button({
   const baseStyles = "flex items-center justify-center gap-2 font-semibold px-5 py-3.5 rounded-xl transition-all active:scale-95 text-sm md:text-base";
   
   const variants = {
-    primary: "bg-[#4648d4] text-white hover:bg-[#3a3cb0] shadow-md shadow-[#4648d4]/20",
-    secondary: "bg-white text-[#191c1e] border border-[#c7c4d7] hover:bg-[#f2f4f6]",
-    tertiary: "bg-[#6063ee] text-white hover:bg-[#4648d4]",
-    ghost: "text-[#464554] hover:bg-black/5"
+    primary: "bg-primary text-white hover:bg-primary-hover shadow-md shadow-primary/20",
+    secondary: "bg-white text-text-main border border-surface-border hover:bg-gray-100",
+    tertiary: "bg-tertiary text-white hover:bg-primary",
+    ghost: "text-text-muted hover:bg-black/5"
   };
 
   return (

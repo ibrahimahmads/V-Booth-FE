@@ -143,7 +143,7 @@ export default function EditGreetingPage() {
             className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900"
           >
             <ArrowLeft className="w-4 h-4" /> Batal
-          </button>
+          </button><br />
           <h2 className="text-base font-bold text-[#111827]">Edit Ucapan Anda</h2>
         </div>
 

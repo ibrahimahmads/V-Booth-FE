@@ -8,13 +8,15 @@ import SuccessPage from '../pages/SuccessPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import EditGreetingPage from '../pages/EditGreetingPage';
 import GreetingDetailPage from '../pages/GreetingDetailPage';
+import LandingPage from '../pages/LandingPage';
 
 export default function AppRoutes() {
   return (
     <Routes>
       {/* 1. Halaman Utama / Galeri Memori */}
-      <Route path="/" element={<GalleryPage />} />
+      <Route path="/" element={<LandingPage />} />
 
+      <Route path="/galery" element={<GalleryPage />} />
       <Route path="/booth/step-1" element={<Step1CapturePage />} />
       <Route path="/booth/step-2" element={<Step2FramePage />} />
       <Route path="/booth/step-3" element={<Step3AudioPage />} />
