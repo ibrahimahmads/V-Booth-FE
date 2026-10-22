@@ -47,10 +47,10 @@ export default function Step1CaptureTemplate({
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f9fb] flex flex-col justify-between pb-24">
+    <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col justify-between pb-24 font-sans antialiased">
       <Header />
 
-      <main className="max-w-md w-full mx-auto px-4 py-4 space-y-4 flex-1">
+      <main className="max-w-md w-full mx-auto px-4 py-6 space-y-5 flex-1">
         <StepHeader currentStep={1} totalSteps={4} stepTitle="Capture Photo" />
 
         {/* Organism Kamera & Preview Canvas */}

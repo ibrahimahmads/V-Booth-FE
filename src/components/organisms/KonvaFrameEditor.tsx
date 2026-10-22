@@ -242,9 +242,9 @@ export default function KonvaFrameEditor({
 
       {/* Kontrol Foto yang Sedang Aktif Dipilih */}
       {activeLayer && (
-        <div className="flex items-center justify-between gap-1.5 bg-white px-3 py-2 rounded-2xl border border-[#e2e8f0] shadow-md animate-fade-in max-w-340px w-full">
+        <div className="flex items-center justify-between gap-1.5 bg-white px-3 py-2 rounded-xl border border-canvas-border shadow-md animate-fade-in max-w-340px w-full">
           <IconButton
-            icon={<Crop className="w-4 h-4 text-slate-700" />}
+            icon={<Crop className="w-4 h-4 text-text-muted" />}
             onClick={() => setIsCropOpen(true)}
             title="Crop Foto"
           />
@@ -252,17 +252,17 @@ export default function KonvaFrameEditor({
           <div className="w-px h-4 bg-slate-200 shrink-0" />
 
           <IconButton
-            icon={<ZoomOut className="w-4 h-4 text-slate-700" />}
+            icon={<ZoomOut className="w-4 h-4 text-text-muted" />}
             onClick={() => handleZoom(-0.1)}
             title="Perkecil"
           />
 
-          <span className="text-[11px] font-bold text-slate-600 w-10 text-center shrink-0">
+          <span className="text-[11px] font-bold text-text-muted w-10 text-center shrink-0">
             {Math.round(activeLayer.scale * 100)}%
           </span>
 
           <IconButton
-            icon={<ZoomIn className="w-4 h-4 text-slate-700" />}
+            icon={<ZoomIn className="w-4 h-4 text-text-muted" />}
             onClick={() => handleZoom(0.1)}
             title="Perbesar"
           />
@@ -270,7 +270,7 @@ export default function KonvaFrameEditor({
           <div className="w-px h-4 bg-slate-200 shrink-0" />
 
           <IconButton
-            icon={<RotateCw className="w-4 h-4 text-slate-700" />}
+            icon={<RotateCw className="w-4 h-4 text-text-muted" />}
             onClick={handleRotate}
             title="Putar Foto"
           />

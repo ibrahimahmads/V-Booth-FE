@@ -9,7 +9,7 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-[#f7f9fb] font-sans text-text-main antialiased">
+        <div className="min-h-screen bg-canvas-bg font-sans text-text-main antialiased">
           <Toaster position="top-center" richColors closeButton />
           <AppRoutes />
         </div>

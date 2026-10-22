@@ -97,7 +97,7 @@ export default function AudioPreviewCard({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-3.5 flex items-center gap-3 shadow-xs">
+    <div className="bg-white border border-canvas-border rounded-2xl p-3.5 flex items-center gap-3 shadow-xs">
       <button
         type="button"
         onClick={togglePlay}
@@ -111,7 +111,7 @@ export default function AudioPreviewCard({
       </button>
 
       <div className="flex-1 space-y-1">
-        <div className="relative w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+        <div className="relative w-full h-1.5 bg-canvas-border rounded-full overflow-hidden">
           <div
             className="h-full bg-[#4648d4] rounded-full transition-all duration-100"
             style={{
@@ -123,7 +123,7 @@ export default function AudioPreviewCard({
             }}
           />
         </div>
-        <div className="flex justify-between text-[11px] font-medium text-slate-400">
+        <div className="flex justify-between text-[11px] font-medium text-text-muted">
           <span>{formatSecs(currentTime)}</span>
           {/* TERJAMIN SINKRON SESUAI WAKTU REKAMAN ASLI STEP 3 */}
           <span>{formatSecs(duration)}</span>

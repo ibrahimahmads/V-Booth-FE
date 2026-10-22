@@ -9,6 +9,8 @@ import NotFoundPage from '../pages/NotFoundPage';
 import EditGreetingPage from '../pages/EditGreetingPage';
 import GreetingDetailPage from '../pages/GreetingDetailPage';
 import LandingPage from '../pages/LandingPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
 
 export default function AppRoutes() {
@@ -27,14 +29,8 @@ export default function AppRoutes() {
 
       <Route path="/booth/success" element={<SuccessPage />} />
 
-      <Route
-        path="/login"
-        element={<PlaceholderPage title="Masuk" note="Halaman login akan segera tersedia." />}
-      />
-      <Route
-        path="/register"
-        element={<PlaceholderPage title="Daftar" note="Pendaftaran akun baru belum dibuka." />}
-      />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route
         path="/demo"
         element={

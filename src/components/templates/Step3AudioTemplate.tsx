@@ -22,11 +22,11 @@ export default function Step3AudioTemplate({
   onBackStep,
 }: Step3AudioTemplateProps) {
   return (
-    <div className="min-h-screen bg-[#f7f9fb] flex flex-col justify-between pb-20">
+    <div className="min-h-screen bg-canvas-bg flex flex-col justify-between pb-20">
       {/* Header Aplikasi (V-Booth Event) */}
       <Header />
 
-      <main className="max-w-md w-full mx-auto px-4 py-4 space-y-6 flex-1 justify-center flex flex-col">
+      <main className="max-w-md w-full mx-auto px-4 py-6 space-y-6 flex-1 justify-center flex flex-col">
         {/* Step Indicator (Bahasa Indonesia) */}
         <StepHeader 
           currentStep={3} 
@@ -45,7 +45,7 @@ export default function Step3AudioTemplate({
         {/* Tombol Kembali: Gunakan variant "ghost" */}
             <Button 
                 variant="ghost" 
-                className="text-[#4648d4] font-semibold gap-2.5"
+                className="text-primary font-semibold gap-2.5"
                 icon={<ArrowLeft className="w-5 h-5" />} 
                 onClick={onBackStep}
             >

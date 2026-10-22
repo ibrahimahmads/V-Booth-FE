@@ -44,7 +44,7 @@ export default function Step2FrameTemplate({
   onBackStep,
 }: Step2FrameTemplateProps) {
   return (
-    <div className="min-h-screen bg-[#f7f9fb] flex flex-col justify-between pb-20">
+    <div className="min-h-screen bg-canvas-bg flex flex-col justify-between pb-20">
       <Header />
 
       <main className="max-w-md w-full mx-auto px-4 py-4 space-y-4 flex-1">
@@ -70,10 +70,10 @@ export default function Step2FrameTemplate({
         {/* QoL FEATURE 1: Strip Foto Mentah dari Step 1 (Tambahkan ke Canvas) */}
         <div className="space-y-1.5 pt-1">
           <div className="flex justify-between items-center">
-            <label className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
               Koleksi Foto Step 1:
             </label>
-            <span className="text-[11px] text-slate-400">Klik `+` untuk masuk ke bingkai</span>
+            <span className="text-[11px] text-text-muted">Klik `+` untuk masuk ke bingkai</span>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
@@ -81,7 +81,7 @@ export default function Step2FrameTemplate({
               <button
                 key={index}
                 onClick={() => onAddPhotoToCanvas(src)}
-                className="relative aspect-square rounded-xl overflow-hidden border-2 border-[#e2e8f0] bg-white group hover:border-[#4648d4] transition-all active:scale-95 shadow-sm cursor-pointer"
+                className="relative aspect-square rounded-xl overflow-hidden border-2 border-canvas-border bg-white group hover:border-primary transition-all active:scale-95 shadow-sm cursor-pointer"
               >
                 <img
                   src={src}
@@ -101,14 +101,14 @@ export default function Step2FrameTemplate({
 
         {/* QoL FEATURE 2: Horizontal Scroll Selector Bingkai */}
         <div className="space-y-1.5 pt-1">
-          <label className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
+          <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
             Pilih Bingkai Ucapan:
           </label>
 
           {loading ? (
             <div className="flex gap-3 overflow-hidden">
               {[1, 2, 3].map((n) => (
-                <div key={n} className="w-20 h-28 bg-slate-200 rounded-xl animate-pulse shrink-0" />
+                <div key={n} className="w-20 h-28 bg-surface-secondary-border rounded-xl animate-pulse shrink-0 border border-canvas-border" />
               ))}
             </div>
           ) : (
@@ -123,11 +123,11 @@ export default function Step2FrameTemplate({
                       onClick={() => onSelectFrame(frame)}
                       className={`snap-start shrink-0 w-20 p-1.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1 bg-white cursor-pointer ${
                         isSelected
-                          ? 'border-[#4648d4] bg-[#4648d4]/5 ring-2 ring-[#4648d4]/20 font-bold text-[#4648d4]'
-                          : 'border-[#e2e8f0] text-slate-600 hover:border-slate-300'
+                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20 font-bold text-primary'
+                          : 'border-canvas-border text-text-muted hover:border-canvas-muted'
                       }`}
                     >
-                      <div className="w-full aspect-9/16 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                      <div className="w-full aspect-9/16 bg-canvas-placeholder rounded-lg overflow-hidden border border-canvas-border">
                         <img
                           src={frame.overlayUrl}
                           alt={frame.name}
@@ -141,7 +141,7 @@ export default function Step2FrameTemplate({
                   );
                 })
               ) : (
-                <p className="text-xs text-slate-400 py-2">Bingkai tidak tersedia</p>
+                <p className="text-xs text-text-muted py-2">Bingkai tidak tersedia</p>
               )}
             </div>
           )}

@@ -175,7 +175,7 @@ export default function AudioRecorderPanel({
         <Button
           variant="secondary"
           className="w-full justify-center py-3 rounded-xl"
-          icon={<RotateCcw className="w-5 h-5 text-slate-700" />}
+          icon={<RotateCcw className="w-5 h-5 text-text-muted" />}
           onClick={resetRecording}
         >
           Rekam Ulang Ucapan
@@ -196,10 +196,10 @@ export default function AudioRecorderPanel({
   };
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center gap-6">
+    <div className="bg-white rounded-3xl p-8 shadow-sm border border-canvas-border flex flex-col items-center gap-6">
       <div className="text-center space-y-2.5">
-        <h2 className="text-3xl font-bold text-[#111827]">Ucapan Suara</h2>
-        <p className="text-base text-slate-500 max-w-xs mx-auto">
+        <h2 className="text-3xl font-bold text-text-main">Ucapan Suara</h2>
+        <p className="text-base text-text-muted max-w-xs mx-auto">
           Tinggalkan pesan hangat untuk tuan rumah acara!
         </p>
       </div>
@@ -207,12 +207,12 @@ export default function AudioRecorderPanel({
       <div className="relative my-2">
         <div
           className={`rounded-full p-10 transition-colors duration-300 ${
-            isRecording ? 'bg-red-50' : 'bg-slate-100'
+            isRecording ? 'bg-red-50' : 'bg-canvas-placeholder'
           }`}
         >
           <Mic
             className={`w-12 h-12 transition-colors duration-300 ${
-              isRecording ? 'text-red-500 animate-pulse' : 'text-slate-400'
+              isRecording ? 'text-red-500 animate-pulse' : 'text-text-muted'
             }`}
           />
         </div>
@@ -228,13 +228,13 @@ export default function AudioRecorderPanel({
         <div className="flex items-center justify-center gap-3 font-mono">
           <span
             className={`text-4xl font-bold transition-colors ${
-              isRecording ? 'text-red-600' : 'text-[#111827]'
+              isRecording ? 'text-red-600' : 'text-text-main'
             }`}
           >
             {formatTime(recordingTime)}
           </span>
-          <span className="text-3xl text-slate-300">/</span>
-          <span className="text-2xl text-slate-400 font-medium">00:30</span>
+          <span className="text-3xl text-text-muted">/</span>
+          <span className="text-2xl text-text-muted font-medium">00:30</span>
         </div>
 
         {permissionError && (
@@ -251,8 +251,8 @@ export default function AudioRecorderPanel({
         {audioUrl && !isRecording && (
           <Button
             variant="secondary"
-            className="w-full justify-center py-3 rounded-xl border border-slate-300"
-            icon={<Play className="w-5 h-5 fill-slate-700 text-slate-700" />}
+            className="w-full justify-center py-3 rounded-xl border border-canvas-border"
+            icon={<Play className="w-5 h-5 fill-text-muted text-text-muted" />}
             onClick={playPreview}
           >
             Dengarkan Hasil Rekaman
@@ -260,7 +260,7 @@ export default function AudioRecorderPanel({
         )}
       </div>
 
-      <p className="text-xs text-slate-400 text-center px-4 leading-relaxed">
+      <p className="text-xs text-text-muted text-center px-4 leading-relaxed">
         Rekaman akan berhenti secara otomatis dalam 30 detik.
       </p>
 

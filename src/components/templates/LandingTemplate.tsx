@@ -53,7 +53,7 @@ export default function LandingTemplate() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#faf8f3] text-text-main flex flex-col font-sans antialiased">
+    <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col font-sans antialiased">
       <Navbar
         onLoginClick={() => navigate("/login")}
         onRegisterClick={() => navigate("/register")}
@@ -146,7 +146,7 @@ export default function LandingTemplate() {
                     <span
                       key={i}
                       style={{ height: `${h * 1.8}px` }}
-                      className={`w-0,75 rounded-full ${i < 5 ? "bg-primary" : "bg-[#ddd7cc]"}`}
+                      className={`w-0.75 rounded-full ${i < 5 ? "bg-primary" : "bg-[#ddd7cc]"}`}
                     />
                   ))}
                 </div>

@@ -16,48 +16,44 @@ export default function GalleryTemplate({
   greetings,
   loading,
 }: GalleryTemplateProps) {
-  // State untuk menyimpan item ucapan yang sedang diklik/dibuka detailnya
   const [selectedGreeting, setSelectedGreeting] = useState<GreetingResponse | null>(null);
   const isGreetingsArray = Array.isArray(greetings);
 
   return (
-    <div className="min-h-screen bg-[#f7f9fb] flex flex-col justify-between pb-24">
+    <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col justify-between pb-24 font-sans antialiased">
       <Header />
 
-      {/* Hero Header Event */}
       {loading ? (
         <GalleryHeaderEventSkeleton/>
       ) : (
-        <div className="text-center py-6 px-4 space-y-1 border-b border-[#e2e8f0]/60 bg-white">
-          <span className="text-xs uppercase tracking-[0.2em] text-[#64748B] font-medium">
+        <div className="text-center py-8 px-4 space-y-1.5 border-b border-canvas-border bg-white shadow-xs">
+          <span className="text-[11px] uppercase tracking-[0.24em] text-primary font-semibold">
             WEDDING MEMORIES OF
           </span>
-          <h2 className="text-2xl md:text-3xl font-serif font-bold text-primary">
+          <h2 className="font-serif text-3xl sm:text-4xl text-text-main">
             Rina & Farhan
           </h2>
-          <p className="text-xs text-[#64748B] tracking-widest">16 AGUSTUS 2026</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-text-muted">16 AGUSTUS 2026</p>
         </div>
       )}
 
-      {/* Content Area */}
-      <main className="max-w-md w-full mx-auto px-4 py-4 flex-1">
+      <main className="max-w-md w-full mx-auto px-4 py-6 flex-1">
         {loading && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="h-64 rounded-2xl bg-slate-200 animate-pulse" />
+              <div key={n} className="h-64 rounded-2xl bg-canvas-placeholder animate-pulse" />
             ))}
           </div>
         )}
 
         {!loading && (!isGreetingsArray || greetings.length === 0) && (
-          <div className="text-center py-12 space-y-3">
-            <p className="text-sm text-slate-500">Belum ada ucapan. Jadilah yang pertama!</p>
+          <div className="text-center py-16 space-y-3 bg-white border border-canvas-border rounded-3xl p-6 shadow-xs">
+            <p className="text-sm text-text-muted">Belum ada ucapan. Jadilah yang pertama!</p>
           </div>
         )}
 
-        {/* 2-Column Gallery Grid */}
         {!loading && isGreetingsArray && greetings.length > 0 && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3.5">
             {greetings.map((item, index) => (
               <GreetingCard
                 key={index}
@@ -69,14 +65,12 @@ export default function GalleryTemplate({
         )}
       </main>
 
-      {/* Modal Detail Pop-up */}
       <GreetingDetailModal
         isOpen={Boolean(selectedGreeting)}
         greeting={selectedGreeting}
         onClose={() => setSelectedGreeting(null)}
       />
 
-      {/* Bottom Nav */}
       <BottomNav/>
     </div>
   );

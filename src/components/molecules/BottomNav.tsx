@@ -33,26 +33,26 @@ export default function BottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-t border-slate-200/80 px-6 py-2">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-canvas-bg/85 backdrop-blur-md border-t border-canvas-border px-6 py-2">
       <div className="max-w-md mx-auto flex justify-around items-center">
         {/* Tombol Gallery */}
         <button
           onClick={handleGalery}
           className={`flex flex-col items-center gap-1 transition-colors ${
-            isGalleryActive ? 'text-[#4648d4] font-bold' : 'text-slate-400 hover:text-slate-600'
+            isGalleryActive ? 'text-primary font-bold' : 'text-text-muted hover:text-primary'
           }`}
         >
           <LayoutGrid className="w-5 h-5" />
-          <span className="text-[10px]">Gallery</span>
+          <span className="text-[10px] uppercase tracking-[0.14em]">Gallery</span>
         </button>
 
         {/* Tombol Aksi (+ / Edit Pencil) */}
         <button
           onClick={handleActionClick}
-          className={`flex items-center justify-center w-12 h-12 rounded-2xl shadow-lg transition-transform active:scale-95 ${
+          className={`flex items-center justify-center w-12 h-12 rounded-xl shadow-sm transition-transform active:scale-95 ${
             isBoothActive
-              ? 'bg-[#4648d4] text-white shadow-[#4648d4]/30'
-              : 'bg-[#4648d4]/10 text-[#4648d4] hover:bg-[#4648d4] hover:text-white'
+              ? 'bg-primary text-white shadow-primary/30'
+              : 'bg-surface-secondary-border text-primary hover:bg-primary hover:text-white'
           }`}
         >
           {hasGreetingId ? (

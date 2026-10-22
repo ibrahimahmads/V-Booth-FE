@@ -8,4 +8,8 @@
   --color-surface-secondary-border: #f0ece3;
   --color-text-main: #191c1e;
   --color-text-muted: #464554;
+  --color-canvas-bg: #faf8f3;
+  --color-canvas-border: #e7e2d8;
+  --color-canvas-muted: #64748b;
+  --color-canvas-placeholder: #efeae0;
 }

@@ -67,7 +67,7 @@ export default function GreetingDetailModal({
         </button>
 
         {/* GAMBAR FOTO UTAMA */}
-        <div className="w-full bg-slate-950 rounded-t-3xl overflow-hidden flex items-center justify-center">
+        <div className="w-full bg-canvas-bg rounded-t-3xl overflow-hidden flex items-center justify-center">
           <img
             src={greeting.photoUrl}
             alt={greeting.guestName}
@@ -78,25 +78,24 @@ export default function GreetingDetailModal({
         {/* ISI CONTAINER DETAIL (NAMA, WAKTU, AUDIO) */}
         <div className="p-5 space-y-4 bg-white flex-1">
           <div>
-            <h3 className="text-xl font-bold text-[#111827]">
-              {greeting.guestName}
-            </h3>
-            <p className="text-xs text-slate-400 mt-1">
+            <h3 className="text-xl font-bold text-text-main">{greeting.guestName}</h3>
+            <p className="text-xs text-text-muted mt-1">
               {greeting.tgl} • {greeting.jam} WIB
             </p>
           </div>
 
           {/* AUDIO PLAYER & KONTEN LAINNYA */}
-          <div className="pt-2 border-t border-slate-100">
+          <div className="pt-2 border-t border-canvas-border">
             {greeting.audioUrl ? (
-              <AudioPreviewCard audioSource={greeting.audioUrl}/>
-            ) : (
-              <p className="text-xs text-slate-400 italic text-center py-2">
-                Tamu ini tidak meninggalkan pesan suara.
-              </p>
-            )}
-          </div>
-          <div className="pt-3 grid grid-cols-2 gap-3 border-t border-slate-100">
+                <AudioPreviewCard audioSource={greeting.audioUrl}/>
+              ) : (
+                <p className="text-xs text-text-muted italic text-center py-2">
+                  Tamu ini tidak meninggalkan pesan suara.
+                </p>
+              )}
+            </div>
+
+            <div className="pt-3 grid grid-cols-2 gap-3 border-t border-canvas-border">
             {/* Tombol Download */}
             <Button
               variant="primary"
