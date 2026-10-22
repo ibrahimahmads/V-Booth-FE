@@ -9,6 +9,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 import EditGreetingPage from '../pages/EditGreetingPage';
 import GreetingDetailPage from '../pages/GreetingDetailPage';
 import LandingPage from '../pages/LandingPage';
+import PlaceholderPage from '../pages/PlaceholderPage';
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,24 @@ export default function AppRoutes() {
       <Route path="/greeting/:id" element={<GreetingDetailPage />} />
 
       <Route path="/booth/success" element={<SuccessPage />} />
+
+      <Route
+        path="/login"
+        element={<PlaceholderPage title="Masuk" note="Halaman login akan segera tersedia." />}
+      />
+      <Route
+        path="/register"
+        element={<PlaceholderPage title="Daftar" note="Pendaftaran akun baru belum dibuka." />}
+      />
+      <Route
+        path="/demo"
+        element={
+          <PlaceholderPage
+            title="Demo V-Booth"
+            note="Simulasi pengalaman tamu akan segera hadir. Saat ini kamu bisa mencoba alur tamu dari halaman beranda."
+          />
+        }
+      />
 
       {/* Wildcard Fallback: Jika URL tidak ditemukan, kembalikan ke Gallery */}
       <Route path="*" element={<NotFoundPage />} />
