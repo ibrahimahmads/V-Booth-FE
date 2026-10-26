@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import InputField from '../components/atoms/InputField';
-import GoogleIcon from '../components/atoms/GoogleIcon';
+import { FcGoogle } from 'react-icons/fc';
 
 interface LoginValues {
   usernameOrEmail: string;
@@ -76,7 +76,7 @@ export default function LoginPage() {
             onClick={() => console.log('google login')}
             className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors"
           >
-            <GoogleIcon />
+            <FcGoogle className="w-4 h-4" />
             Masuk dengan Google
           </button>
         </div>
