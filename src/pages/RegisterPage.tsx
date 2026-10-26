@@ -28,7 +28,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f3] flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-canvas-bg flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-[11px] uppercase tracking-[0.24em] text-primary font-semibold">
