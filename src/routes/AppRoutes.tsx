@@ -13,6 +13,10 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
 import DashboardPage from '../pages/DashboardPage';
+import EventsPage from '../pages/EventsPage';
+import PackagesPage from '../pages/PackagesPage';
+import PaymentsPage from '../pages/PaymentsPage';
+import AccountPage from '../pages/AccountPage';
 
 export default function AppRoutes() {
   return (
@@ -21,6 +25,10 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
 
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/dashboard/events" element={<EventsPage />} />
+      <Route path="/dashboard/packages" element={<PackagesPage />} />
+      <Route path="/dashboard/payments" element={<PaymentsPage />} />
+      <Route path="/dashboard/account" element={<AccountPage />} />
       <Route path="/galery" element={<GalleryPage />} />
       <Route path="/booth/step-1" element={<Step1CapturePage />} />
       <Route path="/booth/step-2" element={<Step2FramePage />} />
