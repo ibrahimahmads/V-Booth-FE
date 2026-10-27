@@ -14,9 +14,9 @@ export default function NotFoundPage() {
         {/* Visual Illustration Badge */}
         <div className="relative">
           <div className="w-28 h-28 rounded-full bg-indigo-50 border-8 border-indigo-100/60 flex items-center justify-center">
-            <CameraOff className="w-12 h-12 text-[#4648d4]" />
+            <CameraOff className="w-12 h-12 text-primary" />
           </div>
-          <span className="absolute -bottom-2 bg-[#4648d4] text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-sm">
+          <span className="absolute -bottom-2 bg-primary text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-sm">
             ERROR 404
           </span>
         </div>
@@ -35,7 +35,7 @@ export default function NotFoundPage() {
         <div className="w-full space-y-3 pt-4">
           <Button
             variant="primary"
-            className="w-full justify-center py-3.5 rounded-2xl text-sm font-semibold gap-2 shadow-md shadow-[#4648d4]/25"
+            className="w-full justify-center py-3.5 rounded-2xl text-sm font-semibold gap-2 shadow-md shadow-primary/25"
             icon={<Home className="w-4 h-4" />}
             onClick={() => navigate('/booth/step-1')}
           >

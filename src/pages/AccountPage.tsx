@@ -33,7 +33,7 @@ export default function AccountPage() {
         <div className="bg-white rounded-lg border border-canvas-border p-6 mb-6">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 rounded-full bg-surface-secondary-border border-2 border-primary flex items-center justify-center flex-shrink-0">
+              <div className="w-16 h-16 rounded-full bg-surface-secondary-border border-2 border-primary flex items-center justify-center shrink-0">
                 <User className="w-8 h-8 text-primary" />
               </div>
               <div>
@@ -63,7 +63,7 @@ export default function AccountPage() {
             onClick={() => setShowChangePasswordModal(true)}
             className="w-full flex items-center gap-4 p-5 hover:bg-canvas-placeholder transition-colors text-left"
           >
-            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
               <Key className="w-5 h-5 text-blue-600" />
             </div>
             <div className="flex-1">

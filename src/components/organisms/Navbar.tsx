@@ -19,7 +19,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }: NavbarProps) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="bg-[#faf8f3]/85 backdrop-blur-md border-b border-[#e7e2d8]">
+      <div className="bg-canvas-bg/85 backdrop-blur-md border-b border-canvas-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between">
           <a href="#" className="flex items-center gap-3 group shrink-0">
             <img src="/logo-vb.png" alt="V-Booth" className="w-9 h-9 sm:w-10 sm:h-10 object-contain" />
@@ -64,13 +64,13 @@ export default function Navbar({ onLoginClick, onRegisterClick }: NavbarProps) {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden border-t border-[#e7e2d8] bg-[#faf8f3] px-4 sm:px-6 py-5 flex flex-col gap-4">
+          <div className="md:hidden border-t border-canvas-border bg-canvas-bg px-4 sm:px-6 py-5 flex flex-col gap-4">
             <nav className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <NavLink key={link.name} textSize="md" href={link.href} name={link.name} />
               ))}
             </nav>
-            <div className="flex flex-col gap-2 pt-2 border-t border-[#e7e2d8]">
+            <div className="flex flex-col gap-2 pt-2 border-t border-canvas-border">
               <button
                 onClick={onLoginClick}
                 className="text-sm font-medium text-text-muted hover:text-primary whitespace-nowrap"

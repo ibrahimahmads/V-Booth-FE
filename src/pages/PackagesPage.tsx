@@ -42,7 +42,7 @@ export default function PackagesPage() {
             <div
               key={pkg.id}
               className={`grid grid-cols-1 lg:grid-cols-12 gap-y-6 gap-x-8 py-8 sm:py-10 border-b border-canvas-border ${
-                i === 1 ? 'lg:bg-white lg:px-8 lg:-mx-8 lg:border-x lg:border-[#e7e2d8]' : ''
+                i === 1 ? 'lg:bg-white lg:px-8 lg:-mx-8 lg:border-x lg:border-canvas-border' : ''
               }`}
             >
               <div className="lg:col-span-4">
