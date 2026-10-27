@@ -12,6 +12,7 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
+import DashboardPage from '../pages/DashboardPage';
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
       {/* 1. Halaman Utama / Galeri Memori */}
       <Route path="/" element={<LandingPage />} />
 
+      <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/galery" element={<GalleryPage />} />
       <Route path="/booth/step-1" element={<Step1CapturePage />} />
       <Route path="/booth/step-2" element={<Step2FramePage />} />

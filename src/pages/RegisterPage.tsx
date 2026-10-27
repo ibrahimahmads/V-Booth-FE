@@ -2,14 +2,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import InputField from '../components/atoms/InputField';
+import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
-
-interface RegisterValues {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-}
+import type { RegisterAccount } from '../types/auth.types';
 
 const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const usernamePattern = /^[a-zA-Z0-9]+$/;
@@ -20,10 +15,10 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterValues>({ mode: 'onBlur' });
+    formState: { errors, isSubmitted },
+  } = useForm<RegisterAccount>({ mode: 'onChange' });
 
-  const onSubmit = (data: RegisterValues) => {
+  const onSubmit = (data: RegisterAccount) => {
     console.log('register payload', data);
   };
 
@@ -48,10 +43,10 @@ export default function RegisterPage() {
             type="text"
             placeholder="Nama lengkap"
             {...register('name', {
-              required: 'Wajib diisi.',
-              minLength: { value: 1, message: 'Wajib diisi.' },
+              required: 'Nama tidak boleh kosong.',
+              minLength: { value: 1, message: 'Nama tidak boleh kosong.' },
             })}
-            error={errors.name?.message}
+            error={isSubmitted ? errors.name?.message : undefined}
           />
 
           <InputField
@@ -59,7 +54,7 @@ export default function RegisterPage() {
             type="email"
             placeholder="nama@email.com"
             {...register('email', {
-              required: 'Wajib diisi.',
+              required: 'Email tidak boleh kosong.',
               pattern: {
                 value: emailPattern,
                 message: 'Format email tidak valid.',
@@ -77,7 +72,7 @@ export default function RegisterPage() {
             type="text"
             placeholder="pengguna123"
             {...register('username', {
-              required: 'Wajib diisi.',
+              required: 'Username tidak boleh kosong.',
               minLength: { value: 3, message: 'Minimal 3 karakter.' },
               maxLength: { value: 20, message: 'Maksimal 20 karakter.' },
               pattern: {
@@ -85,15 +80,14 @@ export default function RegisterPage() {
                 message: 'Hanya huruf dan angka.',
               },
             })}
-            error={errors.username?.message}
+            error={isSubmitted ? errors.username?.message : undefined}
           />
 
-          <InputField
+          <PasswordInputField
             label="Password"
-            type="password"
             placeholder="••••••••"
             {...register('password', {
-              required: 'Wajib diisi.',
+              required: 'Password tidak boleh kosong.',
               minLength: {
                 value: 8,
                 message: 'Minimal 8 karakter.',
@@ -137,8 +131,9 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="text-xs text-text-muted hover:text-text-main underline underline-offset-4"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-text-main hover:text-primary transition-colors"
           >
+            <span>←</span>
             Kembali ke beranda
           </button>
         </div>

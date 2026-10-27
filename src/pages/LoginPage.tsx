@@ -2,12 +2,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button';
 import InputField from '../components/atoms/InputField';
+import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
-
-interface LoginValues {
-  usernameOrEmail: string;
-  password: string;
-}
+import type { LoginRequest } from '../types/auth.types';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -15,10 +12,11 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginValues>({ mode: 'onBlur' });
+  } = useForm<LoginRequest>({ mode: 'onSubmit' });
 
-  const onSubmit = (data: LoginValues) => {
+  const onSubmit = (data: LoginRequest) => {
     console.log('login payload', data);
+    navigate('/dashboard');
   };
 
   return (
@@ -42,25 +40,16 @@ export default function LoginPage() {
             type="text"
             placeholder="nama@email.com"
             {...register('usernameOrEmail', {
-              required: 'Wajib diisi.',
-              minLength: {
-                value: 3,
-                message: 'Minimal 3 karakter.',
-              },
+              required: 'Username atau email tidak boleh kosong.',
             })}
             error={errors.usernameOrEmail?.message}
           />
 
-          <InputField
+          <PasswordInputField
             label="Password"
-            type="password"
             placeholder="••••••••"
             {...register('password', {
-              required: 'Wajib diisi.',
-              minLength: {
-                value: 8,
-                message: 'Minimal 8 karakter.',
-              },
+              required: 'Password tidak boleh kosong.',
             })}
             error={errors.password?.message}
           />
@@ -96,8 +85,9 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="text-xs text-text-muted hover:text-text-main underline underline-offset-4"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-text-main hover:text-primary transition-colors"
           >
+            <span>←</span>
             Kembali ke beranda
           </button>
         </div>

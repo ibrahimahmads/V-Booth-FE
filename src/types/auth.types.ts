@@ -13,6 +13,6 @@ export interface LoginResponse{
 }
 
 export interface LoginRequest{
-    emailOrUsername:string;
+    usernameOrEmail:string;
     password:string;
 }
