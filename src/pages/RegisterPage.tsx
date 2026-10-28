@@ -4,22 +4,39 @@ import Button from '../components/atoms/Button';
 import InputField from '../components/atoms/InputField';
 import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
+import { Loader2 } from 'lucide-react';
 import type { RegisterAccount } from '../types/auth.types';
-
-const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-const usernamePattern = /^[a-zA-Z0-9]+$/;
-const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,}$/;
+import { useLoadingStore } from '../stores/useLoadingStore';
+import { registerAccount } from '../services/auth.service';
+import { errorAlert, successAlert } from '../utils/alert/alert';
+import type { ApiErrorResponse } from '../services/api';
+import { emailPattern, passwordPattern, usernamePattern } from '../utils/helper/pattern';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const {setIsLoading} = useLoadingStore();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted },
+    formState: { errors, isSubmitted, isSubmitting },
   } = useForm<RegisterAccount>({ mode: 'onChange' });
 
-  const onSubmit = (data: RegisterAccount) => {
+  const onSubmit = async (data: RegisterAccount) => {
     console.log('register payload', data);
+    setIsLoading(true);
+    try {
+      await registerAccount(data);
+      successAlert("Registration Successfuly","Your account has been created successfully.")
+      setTimeout(() => {
+				navigate("/login", { replace: true });
+			}, 1000);
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const message = err.response?.data?.message|| "Register failed";
+      errorAlert("Register Failed",message);
+    }finally{
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -100,8 +117,21 @@ export default function RegisterPage() {
             error={errors.password?.message}
           />
 
-          <Button type="submit" variant="primary" fullWidth className="rounded-sm">
-            Daftar
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            className="rounded-sm"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Mendaftar...
+              </>
+            ) : (
+              'Daftar'
+            )}
           </Button>
         </form>
 

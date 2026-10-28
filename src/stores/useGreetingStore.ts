@@ -28,8 +28,7 @@ export const useGreetingFormStore = create<GreetingFormState>((set) => ({
   setStep: (step) => set({ step }),
   setRawPhotos: (rawPhotos) => set({ rawPhotos }),
   setFramedPhoto: (framedPhoto) => set({ framedPhoto }),
-  setRecordedAudio: (audio, duration = 0) =>
-    set({ recordedAudio: audio, audioDuration: duration }),
+  setRecordedAudio: (audio, duration = 0) => set({ recordedAudio: audio, audioDuration: duration }),
   setGuestName: (guestName) => set({ guestName }),
   resetForm: () =>
     set({

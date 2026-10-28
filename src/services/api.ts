@@ -8,3 +8,11 @@ export const api = axios.create({
     },
     timeout: 10000,
 });
+
+export interface ApiErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}

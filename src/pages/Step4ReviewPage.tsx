@@ -18,7 +18,6 @@ export default function Step4ReviewPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Guard Clause: Pastikan foto dan audio sudah ada sebelum masuk halaman review
   useEffect(() => {
     if (!framedPhoto) {
       setStep(2);

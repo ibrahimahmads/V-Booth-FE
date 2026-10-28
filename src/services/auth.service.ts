@@ -1,7 +1,7 @@
 import type { LoginRequest, LoginResponse, RegisterAccount } from "../types/auth.types";
 import { api } from "./api";
 
-export async function register(payload:RegisterAccount): Promise<string> {
+export async function registerAccount(payload:RegisterAccount): Promise<string> {
   const res = await api.post<string>("/auth/register",payload);
   return res.data;
 }
