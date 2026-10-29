@@ -9,7 +9,6 @@ export interface RegisterAccount{
 
 export interface LoginResponse{
     account:AccountResponse;
-    token:string;
 }
 
 export interface LoginRequest{

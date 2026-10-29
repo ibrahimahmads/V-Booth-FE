@@ -8,9 +8,9 @@ import { Loader2 } from 'lucide-react';
 import type { RegisterAccount } from '../types/auth.types';
 import { useLoadingStore } from '../stores/useLoadingStore';
 import { registerAccount } from '../services/auth.service';
-import { errorAlert, successAlert } from '../utils/alert/alert';
 import type { ApiErrorResponse } from '../services/api';
 import { emailPattern, passwordPattern, usernamePattern } from '../utils/helper/pattern';
+import { errorAlertWithTitle, successAlertWithTitle } from '../utils/alert/alert';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -22,18 +22,17 @@ export default function RegisterPage() {
   } = useForm<RegisterAccount>({ mode: 'onChange' });
 
   const onSubmit = async (data: RegisterAccount) => {
-    console.log('register payload', data);
     setIsLoading(true);
     try {
       await registerAccount(data);
-      successAlert("Registration Successfuly","Your account has been created successfully.")
+      successAlertWithTitle("Registration Successfuly","Your account has been created successfully.")
       setTimeout(() => {
 				navigate("/login", { replace: true });
 			}, 1000);
     } catch (error:unknown) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message|| "Register failed";
-      errorAlert("Register Failed",message);
+      errorAlertWithTitle("Register Failed",message);
     }finally{
       setIsLoading(false);
     }

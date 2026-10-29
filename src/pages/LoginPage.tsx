@@ -5,18 +5,37 @@ import InputField from '../components/atoms/InputField';
 import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
 import type { LoginRequest } from '../types/auth.types';
+import { useLoadingStore } from '../stores/useLoadingStore';
+import type { ApiErrorResponse } from '../services/api';
+import { errorAlertWithTitle, successAlert} from '../utils/alert/alert';
+import { login } from '../services/auth.service';
+import { Loader2 } from 'lucide-react';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const {setIsLoading} = useLoadingStore();
+  const {setAccount} = useAuthStore();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginRequest>({ mode: 'onSubmit' });
 
-  const onSubmit = (data: LoginRequest) => {
-    console.log('login payload', data);
-    navigate('/dashboard');
+  const onSubmit = async(data: LoginRequest) => {
+    setIsLoading(true);
+    try {
+      const res = await login(data);
+      setAccount(res.account);
+      successAlert("Login Berhasil");
+      navigate('/dashboard');
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const message = err.response?.data?.message||"Login Failed";
+      errorAlertWithTitle("Login Gagal",message)   
+    }finally{
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -54,8 +73,15 @@ export default function LoginPage() {
             error={errors.password?.message}
           />
 
-          <Button type="submit" variant="primary" fullWidth className="rounded-sm">
-            Masuk
+          <Button type="submit" variant="primary" fullWidth className="rounded-sm" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              'Masuk'
+            )}
           </Button>
         </form>
 

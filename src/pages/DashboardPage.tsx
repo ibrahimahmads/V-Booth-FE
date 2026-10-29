@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Calendar, Gift, PartyPopper } from 'lucide-react';
 import DashboardLayout from '../components/templates/DashboardLayout';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useLoadingStore } from '../stores/useLoadingStore';
+import { getMyAccount } from '../services/account.service';
+import type { ApiErrorResponse } from '../services/api';
+import { errorAlertWithTitle } from '../utils/alert/alert';
 
 interface Event {
   id: string;
@@ -12,7 +17,29 @@ interface Event {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [userName] = useState('Ahmad Ibrahim');
+  const { isLoading, setIsLoading } = useLoadingStore();
+  const {account,setAccount, reset} = useAuthStore();
+
+  const fetchDataAccount = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getMyAccount();
+        setAccount(data);
+      } catch (error:unknown) {
+        const err = error as ApiErrorResponse;
+        const message = err.response?.data?.message||"Tolong login kembali";
+        errorAlertWithTitle("Gagal mengambil data",message);
+        reset();
+        navigate("/login");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+        fetchDataAccount();
+      }, []);
+  
 
   const mockEvents: Event[] = [
     { id: '1', name: 'Pernikahan Rina & Farhan', date: '16 Agustus 2026', greetingCount: 24 },
@@ -29,7 +56,7 @@ export default function DashboardPage() {
     <DashboardLayout>
       <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="mb-8 space-y-2">
-          <h1 className="text-3xl font-serif text-text-main">Selamat datang, {userName}!</h1>
+          <h1 className="text-3xl font-serif text-text-main">Selamat datang, {account?.name}!</h1>
           <p className="text-text-muted">Kelola event dan lihat ucapan dari tamu-tamu Anda.</p>
         </div>
 
