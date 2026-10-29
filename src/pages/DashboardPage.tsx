@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Calendar, Gift, PartyPopper } from 'lucide-react';
 import DashboardLayout from '../components/templates/DashboardLayout';
@@ -7,6 +7,7 @@ import { useLoadingStore } from '../stores/useLoadingStore';
 import { getMyAccount } from '../services/account.service';
 import type { ApiErrorResponse } from '../services/api';
 import { errorAlertWithTitle } from '../utils/alert/alert';
+import DashboardSkeleton from '../components/skeletons/DashboardSkeleton';
 
 interface Event {
   id: string;
@@ -18,7 +19,7 @@ interface Event {
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { isLoading, setIsLoading } = useLoadingStore();
-  const {account,setAccount, reset} = useAuthStore();
+  const { account, setAccount, reset } = useAuthStore();
 
   const fetchDataAccount = async () => {
       try {
@@ -36,10 +37,17 @@ export default function DashboardPage() {
       }
     };
 
-    useEffect(() => {
-        fetchDataAccount();
-      }, []);
-  
+  useEffect(() => {
+    fetchDataAccount();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <DashboardSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   const mockEvents: Event[] = [
     { id: '1', name: 'Pernikahan Rina & Farhan', date: '16 Agustus 2026', greetingCount: 24 },

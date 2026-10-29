@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Calendar, Package, Receipt, User, LogOut, PartyPopper } from 'lucide-react';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { logout } from '../../services/auth.service';
+import type { ApiErrorResponse } from '../../services/api';
+import { errorAlert } from '../../utils/alert/alert';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -16,11 +20,19 @@ const MENU_ITEMS = [
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const navigate = useNavigate();
+  const {reset} = useAuthStore();
   const location = useLocation();
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      reset();
+      navigate("/login")
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const message = err.response?.data?.message||"Gagal Logout";
+      errorAlert(message);   
+    }
   };
 
   const isActive = (path: string) => location.pathname === path;

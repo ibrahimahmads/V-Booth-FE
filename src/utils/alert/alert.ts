@@ -11,3 +11,7 @@ export function successAlertWithTitle (title:string,msg:string){
 export function successAlert(msg:string){
     toast.success(msg)
 }
+
+export function errorAlert(msg:string){
+    toast.warning(msg)
+}
