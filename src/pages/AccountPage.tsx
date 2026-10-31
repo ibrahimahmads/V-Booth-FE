@@ -1,6 +1,12 @@
 import { useState } from 'react';
-import { User, Mail, Lock, Edit2, Key } from 'lucide-react';
+import { User, Mail, Lock, Edit2, Key, LogOut } from 'lucide-react';
 import DashboardLayout from '../components/templates/DashboardLayout';
+import { useAuthStore } from '../stores/useAuthStore';
+import { logout } from '../services/auth.service';
+import type { ApiErrorResponse } from '../services/api';
+import { errorAlert } from '../utils/alert/alert';
+import { useNavigate } from 'react-router-dom';
+import ConfirmDialog from '@/components/organisms/ConfirmDialog';
 
 interface UserProfile {
   name: string;
@@ -8,6 +14,7 @@ interface UserProfile {
 }
 
 export default function AccountPage() {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile>({
     name: 'Ahmad Ibrahim',
     email: 'ahmad@example.com',
@@ -15,10 +22,34 @@ export default function AccountPage() {
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [tempProfile, setTempProfile] = useState(profile);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const { reset } = useAuthStore();
 
   const handleSaveProfile = () => {
     setProfile(tempProfile);
     setShowEditProfileModal(false);
+  };
+
+  const handleDialogLogoutOpen = ()=>{
+    setIsLogoutDialogOpen(true);
+  }
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      reset();
+      navigate("/login")
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const message = err.response?.data?.message||"Gagal Logout";
+      errorAlert(message);   
+    }finally{
+      setIsLoggingOut(false);
+      setIsLogoutDialogOpen(false)
+    }
   };
 
   return (
@@ -61,7 +92,7 @@ export default function AccountPage() {
         <div className="bg-white rounded-lg border border-canvas-border overflow-hidden">
           <button
             onClick={() => setShowChangePasswordModal(true)}
-            className="w-full flex items-center gap-4 p-5 hover:bg-canvas-placeholder transition-colors text-left"
+            className="w-full flex items-center gap-4 p-5 hover:bg-canvas-placeholder transition-colors text-left border-b border-canvas-border"
           >
             <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
               <Key className="w-5 h-5 text-blue-600" />
@@ -71,6 +102,21 @@ export default function AccountPage() {
               <p className="text-sm text-text-muted">Perbarui password akun Anda untuk keamanan yang lebih baik.</p>
             </div>
             <Lock className="w-4 h-4 text-text-muted" />
+          </button>
+
+          {/* Mobile Logout Button */}
+          <button
+            onClick={handleDialogLogoutOpen}
+            disabled={isLoggingOut}
+            className="lg:hidden w-full flex items-center gap-4 p-5 hover:bg-red-50 transition-colors text-left text-red-600 disabled:opacity-50"
+          >
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+              <LogOut className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold">Keluar</p>
+              <p className="text-sm text-red-500">Logout dari akun Anda</p>
+            </div>
           </button>
         </div>
 
@@ -160,6 +206,15 @@ export default function AccountPage() {
             </div>
           </div>
         )}
+
+        <ConfirmDialog
+              open={isLogoutDialogOpen}
+              onOpenChange={setIsLogoutDialogOpen}
+              title='Apakah Anda yakin ingin keluar?'
+              onAction={handleLogout}
+              isLoading={isLoggingOut}
+              variant='danger'
+              />
       </div>
     </DashboardLayout>
   );

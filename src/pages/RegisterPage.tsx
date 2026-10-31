@@ -5,6 +5,7 @@ import InputField from '../components/atoms/InputField';
 import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
 import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import type { RegisterAccount } from '../types/auth.types';
 import { useLoadingStore } from '../stores/useLoadingStore';
 import { registerAccount } from '../services/auth.service';
@@ -20,6 +21,7 @@ export default function RegisterPage() {
     handleSubmit,
     formState: { errors, isSubmitted, isSubmitting },
   } = useForm<RegisterAccount>({ mode: 'onChange' });
+  const [isGoogleRegistering, setIsGoogleRegistering] = useState(false);
 
   const onSubmit = async (data: RegisterAccount) => {
     setIsLoading(true);
@@ -137,11 +139,25 @@ export default function RegisterPage() {
         <div className="mt-5">
           <button
             type="button"
-            onClick={() => console.log('google signup')}
-            className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors"
+            onClick={() => {
+              setIsGoogleRegistering(true);
+              window.open('http://localhost:8080/oauth2/authorization/google', '_blank', 'width=500,height=600');
+              setTimeout(() => setIsGoogleRegistering(false), 2000);
+            }}
+            disabled={isGoogleRegistering}
+            className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <FcGoogle className="w-4 h-4" />
-            Daftar dengan Google
+            {isGoogleRegistering ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Membuka Google...
+              </>
+            ) : (
+              <>
+                <FcGoogle className="w-4 h-4" />
+                Daftar dengan Google
+              </>
+            )}
           </button>
         </div>
 

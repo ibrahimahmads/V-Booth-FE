@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Calendar, Package, Receipt, User, LogOut, PartyPopper } from 'lucide-react';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { logout } from '../../services/auth.service';
 import type { ApiErrorResponse } from '../../services/api';
 import { errorAlert } from '../../utils/alert/alert';
+import ConfirmDialog from '../organisms/ConfirmDialog';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -23,7 +24,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const {reset} = useAuthStore();
   const location = useLocation();
 
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleDialogLogoutOpen = ()=>{
+    setIsLogoutDialogOpen(true);
+  }
+
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await logout();
       reset();
@@ -32,6 +41,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message||"Gagal Logout";
       errorAlert(message);   
+    }finally{
+      setIsLoggingOut(false);
+      setIsLogoutDialogOpen(false)
     }
   };
 
@@ -72,7 +84,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Logout */}
         <div className="px-3 py-4 border-t border-canvas-border">
           <button
-            onClick={handleLogout}
+            onClick={handleDialogLogoutOpen}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
           >
             <LogOut className="w-5 h-5" />
@@ -118,6 +130,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           })}
         </div>
       </nav>
+
+      <ConfirmDialog
+      open={isLogoutDialogOpen}
+      onOpenChange={setIsLogoutDialogOpen}
+      title='Apakah Anda yakin ingin keluar?'
+      onAction={handleLogout}
+      isLoading={isLoggingOut}
+      variant='danger'
+      />
     </div>
   );
 }

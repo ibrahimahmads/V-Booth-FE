@@ -4,13 +4,15 @@ import Button from '../components/atoms/Button';
 import InputField from '../components/atoms/InputField';
 import PasswordInputField from '../components/atoms/PasswordInputField';
 import { FcGoogle } from 'react-icons/fc';
+import { Loader2 } from 'lucide-react';
 import type { LoginRequest } from '../types/auth.types';
 import { useLoadingStore } from '../stores/useLoadingStore';
 import type { ApiErrorResponse } from '../services/api';
 import { errorAlertWithTitle, successAlert} from '../utils/alert/alert';
 import { login } from '../services/auth.service';
-import { Loader2 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore';
+import { useGoogleAuth } from '../hooks/useGoogleAuthCallback';
+import { getMyAccount } from '@/services/account.service';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -21,6 +23,18 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginRequest>({ mode: 'onSubmit' });
+  const { start: handleGoogleRegister, isLoading: isGoogleRegistering } =
+    useGoogleAuth({
+      onSuccess: async () => {
+        const res = await getMyAccount();
+        setAccount(res);
+        navigate('/dashboard');
+      },
+      onError: (message) => {
+        // tampilkan toast / alert
+        console.error(message);
+      },
+    });
 
   const onSubmit = async(data: LoginRequest) => {
     setIsLoading(true);
@@ -88,11 +102,21 @@ export default function LoginPage() {
         <div className="mt-5">
           <button
             type="button"
-            onClick={() => console.log('google login')}
-            className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors"
+            onClick={handleGoogleRegister}
+            disabled={isGoogleRegistering}
+            className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <FcGoogle className="w-4 h-4" />
-            Masuk dengan Google
+            {isGoogleRegistering ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Membuka Google...
+              </>
+            ) : (
+              <>
+                <FcGoogle className="w-4 h-4" />
+                Masuk dengan Google
+              </>
+            )}
           </button>
         </div>
 

@@ -7,6 +7,10 @@ export interface RegisterAccount{
     password:string;
 }
 
+export interface GoogleAuthRequest{
+    code:string;
+}
+
 export interface LoginResponse{
     account:AccountResponse;
 }
