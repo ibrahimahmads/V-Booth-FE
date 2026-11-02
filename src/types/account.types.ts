@@ -7,3 +7,14 @@ export interface AccountResponse{
     hasPassword:boolean;
     role:string;
 }
+
+export interface ChangePasswordRequest{
+    oldPassword:string;
+    newPassword:string;
+}
+
+export interface EditAccountRequest{
+    name:string;
+    username:string;
+    email:string;
+}

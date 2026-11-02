@@ -27,14 +27,14 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       await registerAccount(data);
-      successAlertWithTitle("Registration Successfuly","Your account has been created successfully.")
+      successAlertWithTitle("Registrasi Sukses","Akun kamu berhasil dibuat. ayo login sekarang")
       setTimeout(() => {
 				navigate("/login", { replace: true });
 			}, 1000);
     } catch (error:unknown) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message|| "Register failed";
-      errorAlertWithTitle("Register Failed",message);
+      errorAlertWithTitle("Register Gagal",message);
     }finally{
       setIsLoading(false);
     }
@@ -122,7 +122,7 @@ export default function RegisterPage() {
             type="submit"
             variant="primary"
             fullWidth
-            className="rounded-sm"
+            className="rounded-sm px-5 py-3.5"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -142,7 +142,6 @@ export default function RegisterPage() {
             onClick={() => {
               setIsGoogleRegistering(true);
               window.open('http://localhost:8080/oauth2/authorization/google', '_blank', 'width=500,height=600');
-              setTimeout(() => setIsGoogleRegistering(false), 2000);
             }}
             disabled={isGoogleRegistering}
             className="w-full flex items-center justify-center gap-3 rounded-sm border border-surface-border bg-white px-5 py-3.5 text-sm font-semibold text-text-main hover:border-primary/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"

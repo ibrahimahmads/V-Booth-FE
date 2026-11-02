@@ -25,10 +25,10 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
 
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/dashboard/account" element={<AccountPage />} />
       <Route path="/dashboard/events" element={<EventsPage />} />
       <Route path="/dashboard/packages" element={<PackagesPage />} />
       <Route path="/dashboard/payments" element={<PaymentsPage />} />
-      <Route path="/dashboard/account" element={<AccountPage />} />
       <Route path="/galery" element={<GalleryPage />} />
       <Route path="/booth/step-1" element={<Step1CapturePage />} />
       <Route path="/booth/step-2" element={<Step2FramePage />} />

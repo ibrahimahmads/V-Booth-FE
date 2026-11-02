@@ -87,7 +87,7 @@ export default function LoginPage() {
             error={errors.password?.message}
           />
 
-          <Button type="submit" variant="primary" fullWidth className="rounded-sm" disabled={isSubmitting}>
+          <Button type="submit" variant="primary" fullWidth className="rounded-sm px-5 py-3.5" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />

@@ -1,36 +1,88 @@
-import { useState } from 'react';
-import { User, Mail, Lock, Edit2, Key, LogOut } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { User, Mail, Lock, Edit2, Key, LogOut, Loader2 } from 'lucide-react';
 import DashboardLayout from '../components/templates/DashboardLayout';
 import { useAuthStore } from '../stores/useAuthStore';
 import { logout } from '../services/auth.service';
 import type { ApiErrorResponse } from '../services/api';
-import { errorAlert } from '../utils/alert/alert';
+import { errorAlert, successAlert } from '../utils/alert/alert';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from '@/components/organisms/ConfirmDialog';
-
-interface UserProfile {
-  name: string;
-  email: string;
-}
+import { useLoadingStore } from '@/stores/useLoadingStore';
+import { editAccountProfil, getMyAccount } from '@/services/account.service';
+import type { EditAccountRequest } from '@/types/account.types';
 
 export default function AccountPage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<UserProfile>({
-    name: 'Ahmad Ibrahim',
-    email: 'ahmad@example.com',
-  });
+  const {  setIsLoading } = useLoadingStore();
+  const { account, setAccount, reset } = useAuthStore();
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-  const [tempProfile, setTempProfile] = useState(profile);
+  const [tempProfile, setTempProfile] = useState<EditAccountRequest|null>(null);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isEditProfile, setIsEditProfile] = useState(false);
+  const [isChangePassword, setIsChangePassword] = useState(false);
 
-  const { reset } = useAuthStore();
-
-  const handleSaveProfile = () => {
-    setProfile(tempProfile);
-    setShowEditProfileModal(false);
+  const handleSaveProfile = async () => {
+    try {
+      setIsEditProfile(true);
+      if(tempProfile!= null){
+        const res = await editAccountProfil(tempProfile);
+        setAccount(res);
+        successAlert("Edit profil berhasil");
+      }
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const msg = err.response?.data?.message ||"Gagal edit profil";
+      errorAlert(msg);
+    }finally{
+      setIsEditProfile(false);
+      setShowEditProfileModal(false);
+    }
   };
+
+  const handleChangePassword = async () =>{
+    try {
+      setIsChangePassword(true);
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const msg = err.response?.data?.message ||"Gagal edit profil";
+      errorAlert(msg);
+    }finally{
+      setIsChangePassword(false);
+      setShowChangePasswordModal(false);
+    }
+  }
+
+  const handleOpenEditProfilModal = ()=>{
+    if(account != null && tempProfile == null){
+      const temp:EditAccountRequest = {
+        name:account?.name,
+        username:account?.username,
+        email:account?.email
+      }
+      setTempProfile(temp);
+    }
+    setShowEditProfileModal(true);
+  }
+
+  const fetchAccount = async()=>{
+    setIsLoading(true);
+    try {
+      const res = await getMyAccount();
+      setAccount(res);
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const msg = err.response?.data?.message || "Gagal dapat data akun";
+      errorAlert(msg);
+    }finally{
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(()=>{
+    fetchAccount();
+  },[])
 
   const handleDialogLogoutOpen = ()=>{
     setIsLogoutDialogOpen(true);
@@ -68,18 +120,15 @@ export default function AccountPage() {
                 <User className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-text-main">{profile.name}</h2>
+                <h2 className="text-lg font-semibold text-text-main">{account?.name}</h2>
                 <p className="text-sm text-text-muted mt-1 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  {profile.email}
+                  {account?.email}
                 </p>
               </div>
             </div>
             <button
-              onClick={() => {
-                setTempProfile(profile);
-                setShowEditProfileModal(true);
-              }}
+              onClick={handleOpenEditProfilModal}
               className="p-2 rounded-lg border border-canvas-border hover:bg-canvas-placeholder transition-colors"
               title="Edit Profile"
             >
@@ -130,8 +179,25 @@ export default function AccountPage() {
                   <label className="block text-sm font-medium text-text-main mb-1.5">Nama</label>
                   <input
                     type="text"
-                    value={tempProfile.name}
-                    onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
+                    value={tempProfile?.name}
+                    onChange={(e) => {
+                      if(tempProfile!= null){
+                        setTempProfile({ ...tempProfile, name: e.target.value })
+                      }
+                    }}
+                    className="w-full px-4 py-2.5 rounded-lg border border-canvas-border bg-white text-text-main focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-text-main mb-1.5">Username</label>
+                  <input
+                    type="text"
+                    value={tempProfile?.username}
+                    onChange={(e) => {
+                      if(tempProfile!= null){
+                        setTempProfile({ ...tempProfile, username: e.target.value })
+                      }
+                    }}
                     className="w-full px-4 py-2.5 rounded-lg border border-canvas-border bg-white text-text-main focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
@@ -139,8 +205,12 @@ export default function AccountPage() {
                   <label className="block text-sm font-medium text-text-main mb-1.5">Email</label>
                   <input
                     type="email"
-                    value={tempProfile.email}
-                    onChange={(e) => setTempProfile({ ...tempProfile, email: e.target.value })}
+                    value={tempProfile?.email}
+                    onChange={(e) => {
+                      if(tempProfile!= null){
+                        setTempProfile({ ...tempProfile, email: e.target.value })
+                      }
+                  }}
                     className="w-full px-4 py-2.5 rounded-lg border border-canvas-border bg-white text-text-main focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
@@ -148,15 +218,24 @@ export default function AccountPage() {
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setShowEditProfileModal(false)}
+                  disabled={isEditProfile}
                   className="flex-1 py-2.5 rounded-lg border border-canvas-border text-text-main hover:bg-canvas-placeholder transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleSaveProfile}
-                  className="flex-1 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors"
-                >
+                  disabled={isEditProfile}
+                  className="flex-1 items-center justify-center py-2.5 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors"
+                >{isEditProfile?(
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Sedang Menyimpan...
+                  </>
+                ):(
+                <>
                   Simpan
+                </>
+              )} 
                 </button>
               </div>
             </div>
@@ -189,15 +268,14 @@ export default function AccountPage() {
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setShowChangePasswordModal(false)}
+                  disabled={isChangePassword}
                   className="flex-1 py-2.5 rounded-lg border border-canvas-border text-text-main hover:bg-canvas-placeholder transition-colors"
                 >
                   Batal
                 </button>
                 <button
-                  onClick={() => {
-                    console.log('Change password');
-                    setShowChangePasswordModal(false);
-                  }}
+                  onClick={handleChangePassword}
+                  disabled={isChangePassword}
                   className="flex-1 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-hover transition-colors"
                 >
                   Simpan

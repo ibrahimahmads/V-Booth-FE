@@ -96,7 +96,7 @@ export default function LandingTemplate() {
               </Button>
               <Button
                 variant="secondary"
-                className="rounded-sm px-6 py-4 border-[#e7e2d8] hover:border-primary/50"
+                className="rounded-sm px-6 py-4 border-canvas-border hover:border-primary/50"
                 onClick={() => navigate("/demo")}
                 icon={<Play size={15} className="text-primary" />}
               >
@@ -104,7 +104,7 @@ export default function LandingTemplate() {
               </Button>
             </div>
 
-            <div className="mt-10 pt-6 border-t border-[#e7e2d8] flex flex-wrap gap-x-8 gap-y-3 text-xs text-text-muted">
+            <div className="mt-10 pt-6 border-t border-canvas-border flex flex-wrap gap-x-8 gap-y-3 text-xs text-text-muted">
               <span>Tamu tanpa login</span>
               <span>Foto &amp; pesan suara</span>
               <span>Tautan acara milikmu sendiri</span>
@@ -114,8 +114,8 @@ export default function LandingTemplate() {
           {/* Photo composition */}
           <div className="lg:col-span-5 order-1 lg:order-2">
             <div className="relative max-w-md mx-auto lg:max-w-none">
-              <figure className="relative rotate-[-1.5deg] bg-white p-2 sm:p-2.5 border border-[#e7e2d8] shadow-[0_24px_60px_-32px_rgba(25,28,30,0.45)]">
-                <div className="aspect-4/5 overflow-hidden bg-[#efeae0]">
+              <figure className="relative rotate-[-1.5deg] bg-white p-2 sm:p-2.5 border border-canvas-border shadow-[0_24px_60px_-32px_rgba(25,28,30,0.45)]">
+                <div className="aspect-4/5 overflow-hidden bg-canvas-placeholder">
                   <img
                     src={couplePhoto}
                     alt="Momen hangat pasangan di hari pernikahan"
@@ -130,13 +130,13 @@ export default function LandingTemplate() {
                 </figcaption>
               </figure>
 
-              <figure className="absolute -bottom-8 -left-4 sm:-left-8 w-32 sm:w-40 rotate-3 bg-white p-1.5 border border-[#e7e2d8] shadow-[0_16px_40px_-24px_rgba(25,28,30,0.5)]">
-                <div className="aspect-square overflow-hidden bg-[#efeae0]">
+              <figure className="absolute -bottom-8 -left-4 sm:-left-8 w-32 sm:w-40 rotate-3 bg-white p-1.5 border border-canvas-border shadow-[0_16px_40px_-24px_rgba(25,28,30,0.5)]">
+                <div className="aspect-square overflow-hidden bg-canvas-placeholder]">
                   <img src={ringsPhoto} alt="Cincin pernikahan" className="w-full h-full object-cover" />
                 </div>
               </figure>
 
-              <div className="absolute -top-5 -right-2 sm:-right-5 bg-white border border-[#e7e2d8] shadow-[0_16px_40px_-24px_rgba(25,28,30,0.4)] px-4 py-3 w-45">
+              <div className="absolute -top-5 -right-2 sm:-right-5 bg-white border border-canvas-border shadow-[0_16px_40px_-24px_rgba(25,28,30,0.4)] px-4 py-3 w-45">
                 <div className="flex items-center gap-2 text-primary">
                   <Volume2 size={15} />
                   <span className="text-[10px] uppercase tracking-[0.18em] font-semibold">Pesan suara tamu</span>
@@ -160,7 +160,7 @@ export default function LandingTemplate() {
       </section>
 
       {/* ---------- OCCASION STRIP ---------- */}
-      <section className="border-y border-[#e7e2d8] bg-surface-secondary-border overflow-hidden">
+      <section className="border-y border-canvas-border bg-surface-secondary-border overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-6 whitespace-nowrap overflow-x-auto text-[11px] uppercase tracking-[0.22em] text-text-muted">
           <span>Pernikahan</span>
           <span className="text-primary">·</span>
@@ -198,7 +198,7 @@ export default function LandingTemplate() {
             </p>
           </div>
 
-          <ol className="mt-14 border-t border-[#e7e2d8]">
+          <ol className="mt-14 border-t border-canvas-border">
             {[
               {
                 icon: <User size={17} />,
@@ -228,12 +228,12 @@ export default function LandingTemplate() {
             ].map((item, i) => (
               <li
                 key={item.title}
-                className="grid grid-cols-[auto_1fr] sm:grid-cols-[auto_auto_1fr] gap-x-4 sm:gap-x-8 gap-y-2 items-baseline py-6 sm:py-7 border-b border-[#e7e2d8] group"
+                className="grid grid-cols-[auto_1fr] sm:grid-cols-[auto_auto_1fr] gap-x-4 sm:gap-x-8 gap-y-2 items-baseline py-6 sm:py-7 border-b border-canvas-border group"
               >
                 <span className="font-serif italic text-lg text-primary/70 sm:w-8">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full border border-[#e7e2d8] text-primary group-hover:border-primary/40 transition-colors">
+                <span className="hidden sm:flex items-center justify-center w-9 h-9 rounded-full border border-canvas-border text-primary group-hover:border-primary/40 transition-colors">
                   {item.icon}
                 </span>
                 <div className="sm:flex sm:items-baseline sm:justify-between sm:gap-10">
@@ -328,12 +328,12 @@ export default function LandingTemplate() {
             </div>
           </div>
 
-          <div className="mt-14 border-t border-[#e7e2d8]">
+          <div className="mt-14 border-t border-canvas-border">
             {PACKAGES.map((pkg, i) => (
               <div
                 key={pkg.id}
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-y-6 gap-x-8 py-8 sm:py-10 border-b border-[#e7e2d8] ${
-                  i === 1 ? "lg:bg-white lg:px-8 lg:-mx-8 lg:border-x lg:border-[#e7e2d8]" : ""
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-y-6 gap-x-8 py-8 sm:py-10 border-b border-canvas-border ${
+                  i === 1 ? "lg:bg-white lg:px-8 lg:-mx-8 lg:border-x lg:border-canvas-border" : ""
                 }`}
               >
                 <div className="lg:col-span-4">
@@ -360,7 +360,7 @@ export default function LandingTemplate() {
                   </div>
                   <Button
                     variant={i === 1 ? "primary" : "secondary"}
-                    className="rounded-sm px-5 py-3 text-sm border-[#e7e2d8] whitespace-nowrap"
+                    className="rounded-sm px-5 py-3 text-sm border-canvas-border whitespace-nowrap"
                     onClick={() => navigate("/register")}
                     icon={<ArrowUpRight size={15} />}
                   >

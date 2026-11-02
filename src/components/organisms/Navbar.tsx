@@ -48,7 +48,7 @@ export default function Navbar({ onLoginClick, onRegisterClick }: NavbarProps) {
               variant="primary"
               onClick={onRegisterClick}
               icon={<ArrowUpRight size={16} />}
-              className="rounded-sm"
+              className="rounded-sm px-4 py-2.5"
             >
               Daftar & Buat Acara
             </Button>
