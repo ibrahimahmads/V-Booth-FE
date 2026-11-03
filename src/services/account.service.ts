@@ -12,6 +12,6 @@ export async function changePassword(payload:ChangePasswordRequest): Promise<str
 }
 
 export async function editAccountProfil(payload:EditAccountRequest): Promise<AccountResponse> {
-  const res = await api.post<AccountResponse>("/account/edit/me",payload);
+  const res = await api.put<AccountResponse>("/account/edit/me",payload);
   return res.data;
 }

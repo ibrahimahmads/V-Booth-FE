@@ -2,10 +2,10 @@ import {
   ArrowUpRight,
   Camera,
   Check,
+  CircleCheck,
   CreditCard,
   Play,
   SlidersHorizontal,
-  Sparkles,
   User,
   Users,
   Volume2,
@@ -16,41 +16,43 @@ import Navbar from "../organisms/Navbar";
 
 import couplePhoto from "../../assets/landing/photo-1519741497674-611481863552.jpg";
 import ringsPhoto from "../../assets/landing/photo-1465495976277-4387d4b0b4c6.jpg";
+import { usePaketStore } from "@/stores/usePaketStore";
+import { useLoadingStore } from "@/stores/useLoadingStore";
+import type { ApiErrorResponse } from "@/services/api";
+import { errorAlertWithTitle } from "@/utils/alert/alert";
+import { useEffect } from "react";
+import { getAllPaket } from "@/services/paket.service";
 
 /**
  * ponytail: katalog paket masih placeholder.
  * Harga, fitur, dan batas penggunaan belum ditetapkan oleh bisnis.
  * Ganti isi array ini saja saat data resmi tersedia — markup tidak perlu diubah.
  */
-const PACKAGES = [
-  {
-    id: "paket-1",
-    label: "Paket 01",
-    name: "Nama paket menyusul",
-    tagline: "Cocok untuk acara intim",
-    price: null as string | null,
-    specs: ["Masa aktif acara", "Jumlah tamu", "Foto & pesan suara", "URL slug kustom"],
-  },
-  {
-    id: "paket-2",
-    label: "Paket 02",
-    name: "Nama paket menyusul",
-    tagline: "Untuk resepsi & acara besar",
-    price: null as string | null,
-    specs: ["Masa aktif acara", "Jumlah tamu", "Foto & pesan suara", "URL slug kustom"],
-  },
-  {
-    id: "paket-3",
-    label: "Paket 03",
-    name: "Nama paket menyusul",
-    tagline: "Untuk gathering & acara perusahaan",
-    price: null as string | null,
-    specs: ["Masa aktif acara", "Jumlah tamu", "Foto & pesan suara", "URL slug kustom"],
-  },
-];
 
 export default function LandingTemplate() {
   const navigate = useNavigate();
+  const {listPaket,setListPaket} = usePaketStore();
+  const {setIsLoading} = useLoadingStore();
+
+  const fetchListPaket = async()=>{
+    try {
+      setIsLoading(true);
+      const res = await getAllPaket();
+      setListPaket(res);
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const msg = err.response?.data?.message||"Gagal ambil data paket";
+      errorAlertWithTitle("Failed Fetch List Paket",msg)
+    }finally{
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(()=>{
+    if(listPaket){
+      fetchListPaket();
+    }
+  },[])
 
   return (
     <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col font-sans antialiased">
@@ -322,14 +324,11 @@ export default function LandingTemplate() {
                 Setiap acara dibuat setelah paket dibayar, lalu aktif selama masa acara
                 berlangsung. Pilih paket sesuai skala perayaanmu.
               </p>
-              <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-[#8a6d1f] bg-[#f6ecd2] border border-[#e6d3a3] px-3 py-1.5">
-                <Sparkles size={12} /> Harga &amp; fitur: data sementara
-              </p>
             </div>
           </div>
 
           <div className="mt-14 border-t border-canvas-border">
-            {PACKAGES.map((pkg, i) => (
+            {listPaket.map((pkg, i) => (
               <div
                 key={pkg.id}
                 className={`grid grid-cols-1 lg:grid-cols-12 gap-y-6 gap-x-8 py-8 sm:py-10 border-b border-canvas-border ${
@@ -337,26 +336,42 @@ export default function LandingTemplate() {
                 }`}
               >
                 <div className="lg:col-span-4">
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-text-muted">{pkg.label}</span>
+                  <span className="text-[10px] uppercase tracking-[0.24em] text-text-muted">{`Paket 0`+(i+1)}</span>
                   <h3 className="font-serif text-2xl sm:text-[27px] text-text-main mt-1.5">{pkg.name}</h3>
-                  <p className="text-sm text-text-muted mt-1">{pkg.tagline}</p>
+                  <p className="text-sm text-text-muted mt-1">{pkg.description}</p>
                 </div>
 
-                <div className="lg:col-span-5 grid grid-cols-2 gap-x-6 gap-y-3 self-center">
-                  {pkg.specs.map((spec) => (
-                    <div key={spec} className="text-xs">
-                      <span className="block text-text-muted">{spec}</span>
-                      <span className="block mt-0.5 text-text-main/40 font-serif text-base leading-none">—</span>
-                    </div>
-                  ))}
+                <div className="lg:col-span-5 grid lg:grid-cols-3 grid-cols-5 gap-x-6 gap-y-3 self-center">
+                  <div className="text-xs w-fit">
+                    <span className="block text-text-muted">Masa aktif acara</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.eventActivePeriod+` Hari`}</span>
+                  </div>
+                  <div className="text-xs w-fit">
+                    <span className="block text-text-muted">Masa aktif galery</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.galeryActivePeriod+` Hari`}</span>
+                  </div>
+                  <div className="text-xs w-fit">
+                    <span className="block text-text-muted">Jumlah tamu</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.maxGuest}</span>
+                  </div>
+                  <div className="text-xs w-fit">
+                    <span className="block text-text-muted">Foto & pesan suara</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none text-center">{pkg.isCanPhotoAndVoice?
+                      <CircleCheck size={20}/>
+                    :'-'}</span>
+                  </div>
+                  <div className="text-xs w-fit">
+                    <span className="block text-text-muted">Url slug kostum</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.isUrlSlug?
+                      <CircleCheck size={20}/>
+                    :'-'}</span>
+                  </div>
+  
                 </div>
 
                 <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col lg:items-end justify-between gap-4 self-center">
                   <div className="lg:text-right">
-                    <span className="font-serif text-3xl text-text-main/45">Rp —</span>
-                    <span className="block text-[10px] uppercase tracking-[0.16em] text-text-muted mt-1">
-                      harga menyusul
-                    </span>
+                    <span className="font-serif text-3xl text-text-main/90">Rp. {pkg.price}</span>
                   </div>
                   <Button
                     variant={i === 1 ? "primary" : "secondary"}
@@ -370,13 +385,6 @@ export default function LandingTemplate() {
               </div>
             ))}
           </div>
-
-          <p className="mt-6 max-w-3xl text-xs leading-relaxed text-text-muted">
-            Catatan: nama paket, harga, rincian fitur, dan batas penggunaan di atas belum
-            ditetapkan — semuanya placeholder. Data resmi akan menggantikan blok{" "}
-            <code className="font-mono text-[11px] bg-surface-secondary-border px-1 py-0.5">PACKAGES</code> di{" "}
-            <code className="font-mono text-[11px] bg-surface-secondary-border px-1 py-0.5">LandingTemplate.tsx</code>.
-          </p>
         </div>
       </section>
 
