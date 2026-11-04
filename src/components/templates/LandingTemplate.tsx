@@ -22,6 +22,7 @@ import type { ApiErrorResponse } from "@/services/api";
 import { errorAlertWithTitle } from "@/utils/alert/alert";
 import { useEffect } from "react";
 import { getAllPaket } from "@/services/paket.service";
+import LandingPageSkeleton from "../skeletons/LandingPageSkeleton";
 
 /**
  * ponytail: katalog paket masih placeholder.
@@ -31,8 +32,8 @@ import { getAllPaket } from "@/services/paket.service";
 
 export default function LandingTemplate() {
   const navigate = useNavigate();
-  const {listPaket,setListPaket} = usePaketStore();
-  const {setIsLoading} = useLoadingStore();
+  const { listPaket, setListPaket} = usePaketStore();
+  const { isLoading, setIsLoading} = useLoadingStore();
 
   const fetchListPaket = async()=>{
     try {
@@ -49,10 +50,18 @@ export default function LandingTemplate() {
   }
 
   useEffect(()=>{
-    if(listPaket){
+    if(listPaket.length == 0){
       fetchListPaket();
     }
   },[])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col font-sans antialiased">
+        <LandingPageSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-canvas-bg text-text-main flex flex-col font-sans antialiased">
@@ -357,16 +366,13 @@ export default function LandingTemplate() {
                   <div className="text-xs w-fit">
                     <span className="block text-text-muted">Foto & pesan suara</span>
                     <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none text-center">{pkg.isCanPhotoAndVoice?
-                      <CircleCheck size={20}/>
-                    :'-'}</span>
+                      <CircleCheck size={20}/>:'-'}</span>
                   </div>
                   <div className="text-xs w-fit">
                     <span className="block text-text-muted">Url slug kostum</span>
                     <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.isUrlSlug?
-                      <CircleCheck size={20}/>
-                    :'-'}</span>
+                      <CircleCheck size={20}/>:'-'}</span>
                   </div>
-  
                 </div>
 
                 <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col lg:items-end justify-between gap-4 self-center">
