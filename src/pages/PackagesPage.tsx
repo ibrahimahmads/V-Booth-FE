@@ -22,7 +22,7 @@ export default function PackagesPage() {
         const msg = err.response?.data?.message||"Gagal ambil data paket";
         errorAlertWithTitle("Failed Fetch List Paket",msg)
       }finally{
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     }
   
