@@ -1,4 +1,4 @@
-import { Routes, Route} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import GalleryPage from '../pages/GalleryPage';
 import Step1CapturePage from '../pages/Step1CapturePage';
 import Step2FramePage from '../pages/Step2FramePage';
@@ -17,6 +17,21 @@ import EventsPage from '../pages/EventsPage';
 import PackagesPage from '../pages/PackagesPage';
 import PaymentsPage from '../pages/PaymentsPage';
 import AccountPage from '../pages/AccountPage';
+import AdminLoginPage from '../pages/admin/AdminLoginPage';
+import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
+import AdminUsersPage from '../pages/admin/AdminUsersPage';
+import AdminEventsPage from '../pages/admin/AdminEventsPage';
+import AdminPackagesPage from '../pages/admin/AdminPackagesPage';
+import AdminPaymentsPage from '../pages/admin/AdminPaymentsPage';
+import AdminReportsPage from '../pages/admin/AdminReportsPage';
+import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+// Admin route guard
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const { account } = useAuthStore();
+  return account?.role == "ADMIN" ? <>{children}</> : <Navigate to="/admin/login" replace />;
+}
 
 export default function AppRoutes() {
   return (
@@ -48,6 +63,65 @@ export default function AppRoutes() {
             title="Demo V-Booth"
             note="Simulasi pengalaman tamu akan segera hadir. Saat ini kamu bisa mencoba alur tamu dari halaman beranda."
           />
+        }
+      />
+
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <AdminRoute>
+            <AdminDashboardPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <AdminRoute>
+            <AdminUsersPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/events"
+        element={
+          <AdminRoute>
+            <AdminEventsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/packages"
+        element={
+          <AdminRoute>
+            <AdminPackagesPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/payments"
+        element={
+          <AdminRoute>
+            <AdminPaymentsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/reports"
+        element={
+          <AdminRoute>
+            <AdminReportsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/settings"
+        element={
+          <AdminRoute>
+            <AdminSettingsPage />
+          </AdminRoute>
         }
       />
 
