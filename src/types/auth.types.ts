@@ -1,5 +1,3 @@
-import type { AccountResponse } from "./account.types";
-
 export interface RegisterAccount{
     name:string;
     username:string;
@@ -9,10 +7,6 @@ export interface RegisterAccount{
 
 export interface GoogleAuthRequest{
     code:string;
-}
-
-export interface LoginResponse{
-    account:AccountResponse;
 }
 
 export interface LoginRequest{

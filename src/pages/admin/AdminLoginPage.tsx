@@ -4,32 +4,35 @@ import Button from '../../components/atoms/Button';
 import InputField from '../../components/atoms/InputField';
 import PasswordInputField from '../../components/atoms/PasswordInputField';
 import { Loader2 } from 'lucide-react';
-
-interface AdminLoginForm {
-  username: string;
-  password: string;
-}
+import type { ApiErrorResponse } from '@/services/api';
+import { errorAlert, errorAlertWithTitle, successAlert } from '@/utils/alert/alert';
+import { login } from '@/services/auth.service';
+import { useAuthStore } from '@/stores/useAuthStore';
+import type { LoginRequest } from '@/types/auth.types';
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
+  const { setAccount } = useAuthStore();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AdminLoginForm>({ mode: 'onSubmit' });
+  } = useForm<LoginRequest>({ mode: 'onSubmit' });
 
-  const onSubmit = async (data: AdminLoginForm) => {
+  const onSubmit = async (data: LoginRequest) => {
     try {
-      // Validasi hardcoded untuk admin
-      if (data.username === 'admin' && data.password === 'admin123') {
-        // Simpan ke localStorage untuk demo
-        localStorage.setItem('adminToken', 'admin_token_' + Date.now());
+      const res = await login(data,"ADMIN");
+      if(res.role === "ADMIN"){
+        errorAlert("Akses ditolak. Halaman ini hanya diperuntukkan bagi administrator.");
+      }else{
+        setAccount(res);
+        successAlert("Login Berhasil");
         navigate('/admin/dashboard');
-      } else {
-        alert('Username atau password salah');
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error:unknown) {
+      const err = error as ApiErrorResponse;
+      const message = err.response?.data?.message||"Login Failed";
+      errorAlertWithTitle("Login Gagal",message);
     }
   };
 
@@ -52,11 +55,11 @@ export default function AdminLoginPage() {
           <InputField
             label="Username"
             type="text"
-            placeholder="username"
-            {...register('username', {
-              required: 'Username tidak boleh kosong',
+            placeholder="username or email"
+            {...register('usernameOrEmail', {
+              required: 'Username atau email tidak boleh kosong',
             })}
-            error={errors.username?.message}
+            error={errors.usernameOrEmail?.message}
           />
 
           <PasswordInputField

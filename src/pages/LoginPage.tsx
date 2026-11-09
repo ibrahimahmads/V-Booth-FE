@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import type { LoginRequest } from '../types/auth.types';
 import { useLoadingStore } from '../stores/useLoadingStore';
 import type { ApiErrorResponse } from '../services/api';
-import { errorAlertWithTitle, successAlert} from '../utils/alert/alert';
+import { errorAlert, errorAlertWithTitle, successAlert} from '../utils/alert/alert';
 import { login } from '../services/auth.service';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useGoogleAuth } from '../hooks/useGoogleAuthCallback';
@@ -28,25 +28,30 @@ export default function LoginPage() {
       onSuccess: async () => {
         const res = await getMyAccount();
         setAccount(res);
+        successAlert("Login Berhasil");
         navigate('/dashboard');
       },
       onError: (message) => {
         // tampilkan toast / alert
-        console.error(message);
+        errorAlert(message);
       },
     });
 
   const onSubmit = async(data: LoginRequest) => {
     setIsLoading(true);
     try {
-      const res = await login(data);
-      setAccount(res.account);
-      successAlert("Login Berhasil");
-      navigate('/dashboard');
+      const res = await login(data,"USER");
+      if(res.role === "ADMIN"){
+          errorAlert("Akses ditolak. Halaman ini hanya diperuntukkan bagi pengguna biasa.");
+        }else{
+          setAccount(res);
+          successAlert("Login Berhasil");
+          navigate('/dashboard');
+        }
     } catch (error:unknown) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message||"Login Failed";
-      errorAlertWithTitle("Login Gagal",message)   
+      errorAlertWithTitle("Login Gagal",message);   
     }finally{
       setIsLoading(false);
     }

@@ -24,7 +24,6 @@ export default function DashboardPage() {
   const fetchDataAccount = async () => {
       try {
         setIsLoading(true);
-        if(account != null) return;
         const data = await getMyAccount();
         setAccount(data);
       } catch (error:unknown) {
@@ -39,7 +38,9 @@ export default function DashboardPage() {
     };
 
   useEffect(() => {
-    fetchDataAccount();
+    if(account == null){
+      fetchDataAccount();
+    }
   }, []);
 
   if (isLoading) {

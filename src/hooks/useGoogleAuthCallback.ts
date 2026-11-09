@@ -1,12 +1,13 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useLoadingStore } from '../stores/useLoadingStore';
 import { loginGoogle } from '@/services/auth.service';
-import type { GoogleAuthRequest, LoginResponse } from '@/types/auth.types';
+import type { GoogleAuthRequest } from '@/types/auth.types';
 import type { ApiErrorResponse } from '@/services/api';
 import { errorAlert } from '@/utils/alert/alert';
+import type { AccountResponse } from '@/types/account.types';
 
 interface Options {
-  onSuccess: (user: LoginResponse) => void;
+  onSuccess: (user: AccountResponse) => void;
   onError?: (message: string) => void;
 }
 

@@ -5,7 +5,7 @@ export interface AccountResponse{
     email:string;
     isEmailVerified:boolean;
     hasPassword:boolean;
-    role:string;
+    role:"ADMIN"|"USER";
 }
 
 export interface ChangePasswordRequest{

@@ -1,4 +1,5 @@
-import type { GoogleAuthRequest, LoginRequest, LoginResponse, RegisterAccount } from "../types/auth.types";
+import type { AccountResponse } from "@/types/account.types";
+import type { GoogleAuthRequest, LoginRequest, RegisterAccount } from "../types/auth.types";
 import { api } from "./api";
 
 export async function registerAccount(payload:RegisterAccount): Promise<string> {
@@ -6,13 +7,13 @@ export async function registerAccount(payload:RegisterAccount): Promise<string> 
   return res.data;
 }
 
-export async function login(payload:LoginRequest): Promise<LoginResponse> {
-  const res = await api.post<LoginResponse>("/auth/login",payload);
+export async function login(payload:LoginRequest,loginType:"USER"|"ADMIN"): Promise<AccountResponse> {
+  const res = await api.post<AccountResponse>("/auth/login",payload,{params:{loginType}});
   return res.data;
 }
 
-export async function loginGoogle(payload:GoogleAuthRequest): Promise<LoginResponse> {
-  const res = await api.post<LoginResponse>("/auth/google",payload);
+export async function loginGoogle(payload:GoogleAuthRequest): Promise<AccountResponse> {
+  const res = await api.post<AccountResponse>("/auth/google",payload);
   return res.data;
 }
 

@@ -57,7 +57,9 @@ export default function AccountPage() {
   };
 
   useEffect(() => {
-    fetchAccount();
+    if(account == null){
+      fetchAccount();
+    }
   }, []);
 
   const handleOpenEditProfileModal = () => {
