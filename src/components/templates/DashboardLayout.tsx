@@ -36,7 +36,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     try {
       await logout();
       reset();
-      navigate("/login")
+      navigate("/login", {replace:true});
     } catch (error:unknown) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message||"Gagal Logout";

@@ -1,16 +1,25 @@
 import { ArrowUpRight, CircleCheck} from 'lucide-react';
-import DashboardLayout from '../components/templates/DashboardLayout';
+import DashboardLayout from '../../components/templates/DashboardLayout';
 import { usePaketStore } from '@/stores/usePaketStore';
 import { useLoadingStore } from '@/stores/useLoadingStore';
 import { getAllPaket } from '@/services/paket.service';
 import type { ApiErrorResponse } from '@/services/api';
 import { errorAlertWithTitle } from '@/utils/alert/alert';
-import { useEffect } from 'react';
-import PackagesPageSkeleton from '../components/skeletons/PackagesPageSkeleton';
+import { useEffect, useState } from 'react';
+import PackagesPageSkeleton from '../../components/skeletons/PackagesPageSkeleton';
+import PackageDetailModal from './components/PackageDetailModal';
+import type { Paket } from '@/types/paket.types';
 
 export default function PackagesPage() {
   const { listPaket, setListPaket} = usePaketStore();
   const { isLoading, setIsLoading} = useLoadingStore();
+  const [selectedPaket, setSelectedPaket] = useState<Paket | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleSelectPaket = (pkg: Paket) => {
+    setSelectedPaket(pkg);
+    setIsModalOpen(true);
+  };
   
     const fetchListPaket = async()=>{
       try {
@@ -92,7 +101,8 @@ export default function PackagesPage() {
                   <span className="font-serif text-3xl text-text-main/45">Rp. {pkg.price}</span>
                 </div>
                 <button
-                  className="rounded-sm px-5 py-3 text-sm border border-canvas-border text-text-main hover:bg-canvas-placeholder transition-colors whitespace-nowrap inline-flex items-center justify-center gap-2"
+                  onClick={() => handleSelectPaket(pkg)}
+                  className="rounded-sm px-5 py-3 text-sm border border-canvas-border text-text-main hover:bg-canvas-placeholder transition-colors whitespace-nowrap inline-flex items-center justify-center gap-2 cursor-pointer"
                 >
                   Pilih paket
                   <ArrowUpRight size={15} />
@@ -102,6 +112,15 @@ export default function PackagesPage() {
           ))}
         </div>
       </div>
+
+      <PackageDetailModal
+        isOpen={isModalOpen}
+        paket={selectedPaket}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedPaket(null);
+        }}
+      />
     </DashboardLayout>
   );
 }

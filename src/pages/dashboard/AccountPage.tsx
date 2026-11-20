@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User, Mail, Lock, Edit2, Key, LogOut, Loader2 } from 'lucide-react';
-import DashboardLayout from '../components/templates/DashboardLayout';
-import InputField from '../components/atoms/InputField';
-import PasswordInputField from '../components/atoms/PasswordInputField';
-import Button from '../components/atoms/Button';
-import ConfirmDialog from '../components/organisms/ConfirmDialog';
-import { useAuthStore } from '../stores/useAuthStore';
-import { logout } from '../services/auth.service';
-import type { ApiErrorResponse } from '../services/api';
-import { errorAlert, successAlert } from '../utils/alert/alert';
+import DashboardLayout from '../../components/templates/DashboardLayout';
+import InputField from '../../components/atoms/InputField';
+import PasswordInputField from '../../components/atoms/PasswordInputField';
+import Button from '../../components/atoms/Button';
+import ConfirmDialog from '../../components/organisms/ConfirmDialog';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { logout } from '../../services/auth.service';
+import type { ApiErrorResponse } from '../../services/api';
+import { errorAlert, successAlert } from '../../utils/alert/alert';
 import { useNavigate } from 'react-router-dom';
-import { useLoadingStore } from '../stores/useLoadingStore';
-import { editAccountProfil, getMyAccount, changePassword } from '../services/account.service';
-import type { EditAccountRequest, ChangePasswordRequest } from '../types/account.types';
-import { emailPattern, passwordPattern, usernamePattern } from '../utils/helper/pattern';
+import { useLoadingStore } from '../../stores/useLoadingStore';
+import { editAccountProfil, getMyAccount, changePassword } from '../../services/account.service';
+import type { EditAccountRequest, ChangePasswordRequest } from '../../types/account.types';
+import { emailPattern, passwordPattern, usernamePattern } from '../../utils/helper/pattern';
 
 export default function AccountPage() {
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ export default function AccountPage() {
     try {
       await logout();
       reset();
-      navigate('/login');
+      navigate('/login',{replace:true});
     } catch (error: unknown) {
       const err = error as ApiErrorResponse;
       const message = err.response?.data?.message || 'Gagal Logout';

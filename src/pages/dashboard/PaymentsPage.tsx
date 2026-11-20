@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CreditCard, Receipt, CheckCircle2, XCircle, Calendar, Package } from 'lucide-react';
-import DashboardLayout from '../components/templates/DashboardLayout';
+import DashboardLayout from '../../components/templates/DashboardLayout';
 
 interface Payment {
   id: string;

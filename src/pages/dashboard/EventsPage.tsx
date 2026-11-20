@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Calendar, MapPin, Link2, Eye, Edit, PartyPopper } from 'lucide-react';
-import DashboardLayout from '../components/templates/DashboardLayout';
+import DashboardLayout from '../../components/templates/DashboardLayout';
 
 interface Event {
   id: string;

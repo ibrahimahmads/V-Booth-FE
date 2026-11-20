@@ -5,7 +5,7 @@ export interface AccountResponse{
     email:string;
     isEmailVerified:boolean;
     hasPassword:boolean;
-    role:"ADMIN"|"USER";
+    role:Role;
 }
 
 export interface ChangePasswordRequest{
@@ -18,3 +18,15 @@ export interface EditAccountRequest{
     username:string;
     email:string;
 }
+
+export interface Account{
+    id:string;
+    name:string;
+    username:string;
+    email:string;
+    isEmailVerified:boolean;
+    googleId:string;
+    role:Role;
+}
+
+type Role = "ADMIN"|"USER";

@@ -12,11 +12,12 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import PlaceholderPage from '../pages/PlaceholderPage';
-import DashboardPage from '../pages/DashboardPage';
-import EventsPage from '../pages/EventsPage';
-import PackagesPage from '../pages/PackagesPage';
-import PaymentsPage from '../pages/PaymentsPage';
-import AccountPage from '../pages/AccountPage';
+import DashboardPage from '../pages/dashboard/DashboardPage';
+import EventsPage from '../pages/dashboard/EventsPage';
+import PackagesPage from '../pages/dashboard/PackagesPage';
+import PaymentsPage from '../pages/dashboard/PaymentsPage';
+import AccountPage from '../pages/dashboard/AccountPage';
+import PaymentPage from '../pages/dashboard/PaymentPage';
 import AdminLoginPage from '../pages/admin/AdminLoginPage';
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
 import AdminUsersPage from '../pages/admin/AdminUsersPage';
@@ -26,6 +27,7 @@ import AdminPaymentsPage from '../pages/admin/AdminPaymentsPage';
 import AdminReportsPage from '../pages/admin/AdminReportsPage';
 import AdminSettingsPage from '../pages/admin/AdminSettingsPage';
 import { useAuthStore } from '@/stores/useAuthStore';
+import SuccessPaymentPage from '@/pages/dashboard/SuccessPaymentPage';
 
 // Admin route guard
 function AdminRoute({ children }: { children: React.ReactNode }) {
@@ -44,6 +46,8 @@ export default function AppRoutes() {
       <Route path="/dashboard/events" element={<EventsPage />} />
       <Route path="/dashboard/packages" element={<PackagesPage />} />
       <Route path="/dashboard/payments" element={<PaymentsPage />} />
+      <Route path="/dashboard/payment" element={<PaymentPage />} />
+      <Route path="/dashboard/payment/success" element={<SuccessPaymentPage />} />
       <Route path="/galery" element={<GalleryPage />} />
       <Route path="/booth/step-1" element={<Step1CapturePage />} />
       <Route path="/booth/step-2" element={<Step2FramePage />} />
