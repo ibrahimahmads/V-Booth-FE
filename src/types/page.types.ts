@@ -1,14 +1,22 @@
+import type { OrderStatus } from "./payment.types";
+
 export interface PageResponse<T>{
-    content: T[];
+    data: T[];
     page:number;
     size:number;
-    totalElements:number;
+    totalElement:number;
     totalPages:number;
 }
 
-export interface QueryParams {
+export interface QueryParams <T>{
   page?: number;
   size?: number;
   sortBy?: string;
   direction?: "ASC" | "DESC";
+  search?:T;
+}
+
+export interface OrderSearch{
+  keyword?: string;
+  status?: OrderStatus;
 }

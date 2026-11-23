@@ -34,12 +34,13 @@ export interface OrderState{
 export interface OrderResponse{
     id:string;
     amount:number;
+    orderNumber:string;
     orderStatus:OrderStatus;
     paidAtDay:string;
     paidAtTime:string;
     paymentMethod:string;
     qrUrl:string;
     accountId:string;
-    eventId:string;
+    eventId?:string;
     paketName:string;
 }
