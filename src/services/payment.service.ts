@@ -1,4 +1,4 @@
-import type { CheckoutResponse, OrderResponse, Orders, OrderStatus } from "@/types/payment.types";
+import type { CheckoutResponse, OrderDetailResponse, OrderResponse,  OrderStatus } from "@/types/payment.types";
 import { api } from "./api";
 import { BASE_URL } from "../utils/constant/constant-api";
 import type { OrderSearch, PageResponse, QueryParams } from "@/types/page.types";
@@ -33,13 +33,13 @@ export async function getAllMyOrder(param:QueryParams<OrderSearch>={}):Promise<P
   return res.data;
 }
 
-export async function getOrderById(id:string):Promise<Orders> {
-  const res = await api.get<Orders>(`order/${id}`);
+export async function getOrderById(id:string):Promise<OrderDetailResponse> {
+  const res = await api.get<OrderDetailResponse>(`order/${id}`);
   return res.data;
 }
 
-export async function getMyOrderById(id:string):Promise<Orders> {
-  const res = await api.get<Orders>(`order/me/${id}`);
+export async function getMyOrderById(id:string):Promise<OrderDetailResponse> {
+  const res = await api.get<OrderDetailResponse>(`order/me/${id}`);
   return res.data;
 }
 

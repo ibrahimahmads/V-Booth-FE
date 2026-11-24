@@ -1,4 +1,5 @@
 import type { Account } from "./account.types";
+import type { Event, EventStatus } from "./event.types";
 import type { Paket } from "./paket.types";
 
 export type OrderStatus = "PENDING"|"PAID"|"EXPIRED"|"CANCELLED"|"REFUNDED"|"FAILED";
@@ -43,4 +44,32 @@ export interface OrderResponse{
     accountId:string;
     eventId?:string;
     paketName:string;
+}
+
+export interface OrderDetailResponse{
+    id:string;
+    orderNumber:string;
+    amount:number;
+    status:OrderStatus;
+    qrUrl:string;
+    paidAt:string;
+    expiredAt:string;
+    paymentMethod:string;
+    accountId:string;
+    accountName:string;
+    accountEmail:string;
+    paket:PaketInfo;
+    event?:EventInfo;
+}
+
+interface PaketInfo{
+    id:string;
+    name:string;
+    price:number;
+}
+
+interface EventInfo{
+    id:string;
+    name:string;
+    status:EventStatus;
 }

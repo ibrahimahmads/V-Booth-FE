@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { X, Loader2, Calendar, User, Package, CreditCard, CircleCheck, QrCode } from 'lucide-react';
-import type { Orders } from '@/types/payment.types';
+import type { OrderDetailResponse } from '@/types/payment.types';
 import { getOrderById, getMyOrderById } from '@/services/payment.service';
 import OrderStatusBadge from '@/components/atoms/OrderStatusBadge';
 import Button from '@/components/atoms/Button';
+import type { Paket } from '@/types/paket.types';
+import { usePaketStore } from '@/stores/usePaketStore';
 
 interface OrderDetailModalProps {
   orderId: string | null;
@@ -18,7 +20,9 @@ export default function OrderDetailModal({
   onClose,
   isAdmin = false,
 }: OrderDetailModalProps) {
-  const [orderDetail, setOrderDetail] = useState<Orders | null>(null);
+  const {getPaketById} = usePaketStore();
+  const [orderDetail, setOrderDetail] = useState<OrderDetailResponse | null>(null);
+  const [paket, setPaket] = useState<Paket|undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -35,8 +39,6 @@ export default function OrderDetailModal({
 
   useEffect(() => {
     if (!isOpen || !orderId) {
-      setOrderDetail(null);
-      setErrorMsg(null);
       return;
     }
 
@@ -47,7 +49,9 @@ export default function OrderDetailModal({
         const res = isAdmin
           ? await getOrderById(orderId)
           : await getMyOrderById(orderId);
+        const paketRes = getPaketById(res.paket.id);
         setOrderDetail(res);
+        setPaket(paketRes);
       } catch {
         setErrorMsg('Gagal memuat detail transaksi');
       } finally {
@@ -56,7 +60,7 @@ export default function OrderDetailModal({
     };
 
     fetchDetail();
-  }, [isOpen, orderId, isAdmin]);
+  }, [isOpen, orderId, isAdmin,getPaketById]);
 
   if (!isOpen) return null;
 
@@ -121,7 +125,7 @@ export default function OrderDetailModal({
               </div>
 
               {/* Detail Paket */}
-              {orderDetail.paket && (
+              {orderDetail.paket && paket && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-semibold text-text-muted uppercase tracking-wider">
                     <Package className="w-4 h-4 text-primary" />
@@ -132,34 +136,34 @@ export default function OrderDetailModal({
                       <span className="text-text-muted">Nama Paket</span>
                       <span className="font-semibold text-text-main">{orderDetail.paket.name}</span>
                     </div>
-                    {orderDetail.paket.description && (
+                    {paket.description && (
                       <p className="text-xs text-text-muted py-1 leading-relaxed">
-                        {orderDetail.paket.description}
+                        {paket.description}
                       </p>
                     )}
                     <div className="grid grid-cols-2 gap-2 text-xs pt-2">
                       <div className="bg-white p-2.5 rounded-lg border border-canvas-border">
                         <span className="text-text-muted block text-[11px]">Masa Aktif Acara</span>
                         <span className="font-bold text-text-main">
-                          {orderDetail.paket.eventActivePeriod} Hari
+                          {paket.eventActivePeriod} Hari
                         </span>
                       </div>
                       <div className="bg-white p-2.5 rounded-lg border border-canvas-border">
                         <span className="text-text-muted block text-[11px]">Masa Aktif Galeri</span>
                         <span className="font-bold text-text-main">
-                          {orderDetail.paket.galeryActivePeriod} Hari
+                          {paket.galeryActivePeriod} Hari
                         </span>
                       </div>
                       <div className="bg-white p-2.5 rounded-lg border border-canvas-border">
                         <span className="text-text-muted block text-[11px]">Maksimal Tamu</span>
                         <span className="font-bold text-text-main">
-                          {orderDetail.paket.maxGuest} Tamu
+                          {paket.maxGuest} Tamu
                         </span>
                       </div>
                       <div className="bg-white p-2.5 rounded-lg border border-canvas-border">
                         <span className="text-text-muted block text-[11px]">Foto & Pesan Suara</span>
                         <span className="font-bold text-text-main flex items-center gap-1">
-                          {orderDetail.paket.isCanPhotoAndVoice ? (
+                          {paket.isCanPhotoAndVoice ? (
                             <>
                               <CircleCheck className="w-3.5 h-3.5 text-green-600" /> Tersedia
                             </>
@@ -202,7 +206,7 @@ export default function OrderDetailModal({
               </div>
 
               {/* Detail Account (khusus Admin atau jika ada account) */}
-              {orderDetail.account && (
+              {orderDetail.accountId && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-semibold text-text-muted uppercase tracking-wider">
                     <User className="w-4 h-4 text-primary" />
@@ -211,15 +215,11 @@ export default function OrderDetailModal({
                   <div className="bg-canvas-placeholder/40 rounded-xl p-4 border border-canvas-border space-y-2 text-xs">
                     <div className="flex justify-between py-1 border-b border-canvas-border/50">
                       <span className="text-text-muted">Nama</span>
-                      <span className="font-medium text-text-main">{orderDetail.account.name}</span>
+                      <span className="font-medium text-text-main">{orderDetail.accountName}</span>
                     </div>
                     <div className="flex justify-between py-1 border-b border-canvas-border/50">
                       <span className="text-text-muted">Email</span>
-                      <span className="font-medium text-text-main">{orderDetail.account.email}</span>
-                    </div>
-                    <div className="flex justify-between py-1">
-                      <span className="text-text-muted">Username</span>
-                      <span className="font-medium text-text-main">{orderDetail.account.username}</span>
+                      <span className="font-medium text-text-main">{orderDetail.accountEmail}</span>
                     </div>
                   </div>
                 </div>
@@ -233,15 +233,23 @@ export default function OrderDetailModal({
                     <span>Informasi Event</span>
                   </div>
                   <div className="bg-canvas-placeholder/40 rounded-xl p-4 border border-canvas-border space-y-2 text-xs">
-                    <div className="flex justify-between py-1 border-b border-canvas-border/50">
-                      <span className="text-text-muted">Nama Event</span>
-                      <span className="font-medium text-text-main">{orderDetail.event.eventName}</span>
-                    </div>
-                    {orderDetail.event.eventDate && (
-                      <div className="flex justify-between py-1">
-                        <span className="text-text-muted">Tanggal Event</span>
-                        <span className="font-medium text-text-main">{orderDetail.event.eventDate}</span>
+                    {orderDetail.event.status == "DRAFT"&&(
+                      <div className="flex justify-between py-1 border-b border-canvas-border/50">
+                        <span className="text-text-muted">Event Status</span>
+                        <span className="font-medium text-text-main">{orderDetail.event.status}</span>
                       </div>
+                    )}
+                    {orderDetail.event.status != "DRAFT"&&(
+                      <>
+                        <div className="flex justify-between py-1 border-b border-canvas-border/50">
+                          <span className="text-text-muted">Nama Event</span>
+                          <span className="font-medium text-text-main">{orderDetail.event.name}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-canvas-border/50">
+                          <span className="text-text-muted">Event Status</span>
+                          <span className="font-medium text-text-main">{orderDetail.event.status}</span>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
