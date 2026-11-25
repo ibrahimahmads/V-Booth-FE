@@ -27,6 +27,11 @@ export interface Orders{
     paket:Paket;
 }
 
+export interface OrderSearch{
+    keyword?: string;
+    status?: OrderStatus;
+}
+
 export interface OrderState{
     order:CheckoutResponse;
     paket?:Paket;

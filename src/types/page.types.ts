@@ -1,5 +1,3 @@
-import type { OrderStatus } from "./payment.types";
-
 export interface PageResponse<T>{
     data: T[];
     page:number;
@@ -14,9 +12,4 @@ export interface QueryParams <T>{
   sortBy?: string;
   direction?: "ASC" | "DESC";
   search?:T;
-}
-
-export interface OrderSearch{
-  keyword?: string;
-  status?: OrderStatus;
 }

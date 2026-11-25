@@ -1,7 +1,7 @@
-import type { CheckoutResponse, OrderDetailResponse, OrderResponse,  OrderStatus } from "@/types/payment.types";
+import type { CheckoutResponse, OrderDetailResponse, OrderResponse,  OrderSearch,  OrderStatus } from "@/types/payment.types";
 import { api } from "./api";
 import { BASE_URL } from "../utils/constant/constant-api";
-import type { OrderSearch, PageResponse, QueryParams } from "@/types/page.types";
+import type { PageResponse, QueryParams } from "@/types/page.types";
 import { cleanParams } from "@/utils/helper/params";
 
 export async function order(paket:string): Promise<CheckoutResponse> {
