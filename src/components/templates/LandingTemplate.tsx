@@ -360,8 +360,8 @@ export default function LandingTemplate() {
                     <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.galeryActivePeriod+` Hari`}</span>
                   </div>
                   <div className="text-xs w-fit">
-                    <span className="block text-text-muted">Jumlah tamu</span>
-                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.maxGuest}</span>
+                    <span className="block text-text-muted">Jumlah ucapan</span>
+                    <span className="flex justify-center mt-0.5 text-text-main/75 font-serif text-base leading-none">{pkg.maxGreetings}</span>
                   </div>
                   <div className="text-xs w-fit">
                     <span className="block text-text-muted">Foto & pesan suara</span>

@@ -3,7 +3,7 @@ import DashboardLayout from '../../components/templates/DashboardLayout';
 import { useEffect, useState } from 'react';
 import type { EventResponse, EventStatus } from '@/types/event.types';
 import type { ApiErrorResponse } from '@/services/api';
-import { errorAlert } from '@/utils/alert/alert';
+import { errorAlert, errorAlertWithTitle } from '@/utils/alert/alert';
 import { getAllMyEvents } from '@/services/event.service';
 import EventStatusBadge from '@/components/atoms/EventStatusBadge';
 import Pagination from '@/components/molecules/Pagination';
@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import EditEventModal from '@/components/organisms/EditEventModal';
 
 const PAGE_SIZE = 5;
 
@@ -49,6 +50,8 @@ export default function EventsPage() {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalElements, setTotalElements] = useState<number>(0);
+  const [editEventId, setEditEventId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState<boolean>(false);
 
   // searchInput = isi kotak ketik, searchText = nilai yang sudah di-debounce & dikirim ke backend
   const [searchInput, setSearchInput] = useState<string>('');
@@ -102,7 +105,7 @@ export default function EventsPage() {
     return () => {
       ignore = true;
     };
-  }, [page, searchText, filterStatus, sortBy, direction]);
+  }, [page, searchText, filterStatus, sortBy, direction, refreshKey]);
 
   const hasFilter = searchText !== '' || filterStatus !== '';
 
@@ -136,13 +139,16 @@ export default function EventsPage() {
 
   const handleEditEvent = (eventId: string) => {
     console.log('Edit event:', eventId);
+    setEditEventId(eventId);
     // TODO: buka modal/page edit event
   };
 
   const handleViewGallery = (slug: string) => {
     console.log('View gallery:', slug);
-    // TODO: nanti ke /{slug}/galery setelah backend ready
-    // Untuk sekarang redirect ke /galery
+    if(!slug){
+      errorAlertWithTitle("Lengkapi data event terlebih dahulu","Galeri akan aktif setelah detail event Anda isi. Klik Edit Detail untuk melengkapinya.");
+      return;
+    }
   };
 
   return (
@@ -204,7 +210,7 @@ export default function EventsPage() {
                 render={
                   <button
                     type="button"
-                    className="flex w-full shrink-0 items-center gap-2 rounded-xl border border-canvas-border bg-white px-3.5 py-2 text-xs font-medium transition hover:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 data-[popup-open]:border-primary data-[popup-open]:ring-2 data-[popup-open]:ring-primary/20 md:w-auto"
+                    className="flex w-full shrink-0 items-center gap-2 rounded-xl border border-canvas-border bg-white px-3.5 py-2 text-xs font-medium transition hover:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 data-popup-open:border-primary data-popup-open:ring-2 data-popup-open:ring-primary/20 md:w-auto"
                   />
                 }
               >
@@ -342,9 +348,9 @@ export default function EventsPage() {
                 </div>
 
                 <div className="text-right">
-                  <div className="flex items-center justify-end gap-1 text-primary font-semibold mb-1">
+                  <div className="flex items-center justify-end gap-2 text-primary font-semibold mb-1">
                     <PartyPopper className="w-5 h-5" />
-                    {event.numberOfGreetings}/{event.paket.maxGuest}
+                    {event.numberOfGreetings} / {event.paket.maxGreetings}
                   </div>
                   <p className="text-xs text-text-muted">ucapan tamu</p>
                   <p className="text-xs text-text-muted mt-2">{event.paket.name}</p>
@@ -404,6 +410,13 @@ export default function EventsPage() {
           </div>
         )}
       </div>
+
+      <EditEventModal
+        isOpen={editEventId !== null}
+        eventId={editEventId}
+        onClose={() => setEditEventId(null)}
+        onSuccess={() => setRefreshKey((prev) => !prev)}
+      />
     </DashboardLayout>
   );
 }

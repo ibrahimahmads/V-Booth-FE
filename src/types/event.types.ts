@@ -4,7 +4,7 @@ import type { GreetingResponse } from "./greeting.types";
 import type { Paket } from "./paket.types";
 
 export type EventStatus = "DRAFT"| "COMPLETED"| "ARCHIVED"| "CANCELLED"|"ACTIVE";
-type EventType = "WEDDING"| "BIRTHDAY"| "GRADUATION"| "SEMINAR";
+export type EventType = "WEDDING"| "BIRTHDAY"| "GRADUATION"| "SEMINAR";
 
 export interface Event{
     id:string;
@@ -45,6 +45,28 @@ export interface EventResponse{
 interface PaketInfo{
     id:string;
     name:string;
-    maxGuest:number;
+    maxGreetings:number;
+}
+
+export interface EventUpdateRequest {
+  eventName: string;
+  slug: string;
+  eventDescription?: string;
+  eventDate: string;        // "yyyy-MM-dd"
+  eventStartTime?: string;  // "HH:mm:ss"
+  eventEndTime?: string;    // "HH:mm:ss"
+  eventLocation: string;
+  eventType?: EventType;   // perhatikan: backend memakai "eventTypes" (plural)
+}
+
+export interface EditEventFormValues {
+  eventName: string;
+  slug: string;
+  eventDescription: string;
+  eventDate: string;
+  eventStartTime: string;
+  eventEndTime: string;
+  eventLocation: string;
+  eventType: EventType | "";
 }
 

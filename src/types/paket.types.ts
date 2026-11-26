@@ -4,7 +4,7 @@ export interface Paket{
     description:string;
     eventActivePeriod:number;
     galeryActivePeriod:number;
-    maxGuest:number;
+    maxGreetings:number;
     price:number;
     isCanPhotoAndVoice:boolean;
     isUrlSlug:boolean;
@@ -15,6 +15,6 @@ export interface PaketRequest{
     description:string;
     eventActivePeriod:number;
     galeryActivePeriod:number;
-    maxGuest:number;
+    maxGreetings:number;
     price:number;
 }
